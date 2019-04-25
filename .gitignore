@@ -26,11 +26,10 @@ Desktop.ini
 $RECYCLE.BIN/
 
 # App specific
-*/node_modules/
+node_modules
 .tmp
 .vscode
 npm-debug.log
 .build/
-.eslintrc
 *.orig
 yarn-error.log
