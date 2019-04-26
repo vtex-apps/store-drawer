@@ -4,9 +4,6 @@
   "version": "0.1.0",
   "title": "Sidebar",
   "description": "The VTEX Drawer",
-  "scripts": {
-    "prereleasy": "bash lint"
-  },
   "builders": {
     "messages": "1.x",
     "react": "3.x",
