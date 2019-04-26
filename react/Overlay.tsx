@@ -1,33 +1,27 @@
-import classNames from 'classnames'
-import React from 'react'
+import React, { RefForwardingComponent } from 'react'
 
-const Overlay : StorefrontComponent<OverlayProps> = ({
-  opacity = 40,
-  color = 'base--inverted',
-  visible,
-  className = {},
-}: OverlayProps) => {
+interface Props {
+  visible: boolean
+  onClick(event: React.MouseEvent | React.TouchEvent): void
+}
+
+const Overlay: RefForwardingComponent<HTMLDivElement, Props> = (
+  { visible, onClick }: Props,
+  ref
+) => {
   return (
     <div
-      style={{ opacity }}
-      className={classNames(color, {
-        db: !visible,
-        dn: visible,
-        ...className,
-      })}
+      ref={ref}
+      aria-hidden
+      onClick={onClick}
+      style={{
+        opacity: visible ? 0.5 : 0,
+        pointerEvents: visible ? 'auto' : 'none',
+        transition: 'opacity 300ms',
+      }}
+      className="bg-base--inverted z-999 fixed top-0 bottom-0 left-0 right-0"
     />
   )
 }
 
-interface OverlayProps extends OverlaySchema {
-  visible: boolean,
-  className?: object
-}
-
-Overlay.getSchema = props => {
-  return {
-    title: 'editor.overlay.title',
-  }
-}
-
-export default Overlay
+export default React.forwardRef(Overlay)
