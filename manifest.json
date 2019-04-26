@@ -10,9 +10,9 @@
     "store": "0.x"
   },
   "dependencies": {
-    "vtex.styleguide": "9.x",
     "vtex.store-components": "3.x",
-    "vtex.store-icons": "0.x"
+    "vtex.store-icons": "0.x",
+    "vtex.menu": "2.x"
   },
   "mustUpdateAt": "2020-03-28",
   "registries": [
