@@ -2,7 +2,7 @@
   "name": "store-drawer",
   "vendor": "vtex",
   "version": "0.0.0",
-  "title": "Sidebar",
+  "title": "Store Drawer",
   "description": "The VTEX Drawer",
   "builders": {
     "messages": "1.x",
