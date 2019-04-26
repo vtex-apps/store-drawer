@@ -8,8 +8,8 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.7",
-    "@types/react-dom": "^16.8.3",
-    "@types/react": "16.8.10",
+    "@types/react": "^16.8.14",
+    "@types/react-dom": "^16.8.4",
     "@vtex/test-tools": "^0.1.4"
   }
 }
