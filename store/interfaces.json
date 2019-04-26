@@ -1,9 +1,9 @@
 {
-  "unstable--sidebar": {
-    "component": "Sidebar",
-    "composition": "children"
-  },
-  "unstable--drawer": {
-    
+  "drawer": {
+    "component": "Drawer",
+    "composition": "children",
+    "allowed": [
+      "menu"
+    ]
   }
 }
