@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+import { defineMessages } from 'react-intl'
 import { generateBlockClass, BlockClass } from '@vtex/css-handles'
 
 import { IconClose, IconMenu } from 'vtex.store-icons'
@@ -104,9 +105,16 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
   )
 }
 
+const messages = defineMessages({
+  title: {
+    defaultMessage: '',
+    id: 'admin/editor.drawer.title',
+  },
+})
+
 Drawer.getSchema = () => {
   return {
-    title: 'editor.sidebar.title',
+    title: messages.title.id,
   }
 }
 
