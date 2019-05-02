@@ -1,10 +1,13 @@
 import React, { useRef, useState } from 'react'
-import Overlay from './Overlay'
-import Portal from './Portal'
-
-import Swipable from './Swipable'
+import { generateBlockClass, BlockClass } from '@vtex/css-handles'
 
 import { IconClose, IconMenu } from 'vtex.store-icons'
+
+import Overlay from './Overlay'
+import Portal from './Portal'
+import Swipable from './Swipable'
+
+import styles from './Drawer.css'
 
 const useMenuState = () => {
   const [isMenuOpen, setIsOpen] = useState(false)
@@ -40,12 +43,13 @@ const useMenuState = () => {
   return { isMenuOpen, isMenuTransitioning, setMenuOpen, openMenu, closeMenu }
 }
 
-const Drawer: StorefrontComponent<DrawerSchema> = ({
+const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
   // actionIconId,
   // dismissIconId,
   // position,
   // width,
   // height,
+  blockClass,
   children,
 }) => {
   const {
@@ -72,7 +76,10 @@ const Drawer: StorefrontComponent<DrawerSchema> = ({
         >
           <div
             ref={menuRef}
-            className="fixed top-0 left-0 bottom-0 bg-base z-999 flex flex-column"
+            className={`${generateBlockClass(
+              styles.drawer,
+              blockClass
+            )} fixed top-0 left-0 bottom-0 bg-base z-999 flex flex-column`}
             style={{
               maxWidth: '85%',
               pointerEvents: isMenuOpen ? 'auto' : 'none',
