@@ -1,7 +1,7 @@
 {
   "name": "store-drawer",
   "vendor": "vtex",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "title": "Store Drawer",
   "description": "The VTEX Drawer",
   "builders": {
@@ -12,7 +12,8 @@
   "dependencies": {
     "vtex.store-components": "3.x",
     "vtex.store-icons": "0.x",
-    "vtex.menu": "2.x"
+    "vtex.menu": "2.x",
+    "vtex.category-menu": "2.x"
   },
   "mustUpdateAt": "2020-03-28",
   "registries": [

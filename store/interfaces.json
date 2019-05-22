@@ -3,7 +3,8 @@
     "component": "Drawer",
     "composition": "children",
     "allowed": [
-      "menu"
+      "menu",
+      "category-menu"
     ]
   }
 }

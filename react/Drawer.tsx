@@ -8,7 +8,7 @@ import Overlay from './Overlay'
 import Portal from './Portal'
 import Swipable from './Swipable'
 
-import styles from './Drawer.css'
+import styles from './drawer.css'
 
 const useMenuState = () => {
   const [isMenuOpen, setIsOpen] = useState(false)

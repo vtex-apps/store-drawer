@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.0.4] - 2019-05-22
+
+### Added
+- Added category-menu to interfaces.json
+
 ## [0.0.3] - 2019-05-03
 
 ## [0.0.2] - 2019-05-02
