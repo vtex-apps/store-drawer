@@ -1,3 +1,5 @@
+// TODO: Move this to a separate npm package
+
 import React from 'react'
 import { animate } from './simpleAnimation'
 import PropTypes from 'prop-types'
@@ -8,9 +10,6 @@ const BOTH = 'both'
 
 const LEFT = 'left'
 const RIGHT = 'right'
-// TODO: implement vertical swiping
-// const TOP = 'top'
-// const BOTTOM = 'bottom'
 export default class Swipable extends React.Component {
   constructor(props) {
     super(props)
