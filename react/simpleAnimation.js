@@ -1,3 +1,5 @@
+// TODO: Move this to a separate npm package, along with Swipable
+
 const animations = []
 
 const createAnimation = ({ object, prop, stop, isStopped }) => ({
