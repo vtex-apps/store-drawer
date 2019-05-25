@@ -1,7 +1,7 @@
 {
   "name": "store-drawer",
   "vendor": "vtex",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "title": "Store Drawer",
   "description": "The VTEX Drawer",
   "builders": {
