@@ -19,7 +19,14 @@ const stopConflictingAnimations = animation =>
     return !cur.isStopped()
   })
 
-function animate({ object, prop, target, duration, onUpdate = null }) {
+function animate({
+  object,
+  prop,
+  target,
+  duration,
+  onUpdate = null,
+  onComplete = null,
+}) {
   duration *= 1000
   const targetFps = 60
   const frameDuration = 1000 / targetFps
@@ -55,6 +62,9 @@ function animate({ object, prop, target, duration, onUpdate = null }) {
     p += step * timeMultiplier
     if (p >= 1) {
       p = 1
+      if (onComplete != null) {
+        onComplete()
+      }
       stop()
     }
 

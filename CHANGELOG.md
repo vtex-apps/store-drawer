@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.0.5] - 2019-05-25
+### Fixed
+- Prevent scroll from locking when the Drawer is unmounted without being closed.
+- Add scroll to drawer element.
+- Locks scroll on iOS
+
 ## [0.0.4] - 2019-05-22
 
 ### Added
