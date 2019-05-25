@@ -27,7 +27,7 @@ const useMenuState = () => {
     return () => {
       documentElement.style.overflow = 'auto'
     }
-  })
+  }, [isMenuOpen])
 
   let transitioningTimeout: number | null
 
