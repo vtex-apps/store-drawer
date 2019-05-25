@@ -90,6 +90,8 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
               blockClass
             )} fixed top-0 left-0 bottom-0 bg-base z-999 flex flex-column`}
             style={{
+              WebkitOverflowScrolling: 'touch',
+              overflowY: 'scroll',
               maxWidth: '85%',
               pointerEvents: isMenuOpen ? 'auto' : 'none',
               transform: `translate3d(${isMenuOpen ? '0' : '-100%'}, 0, 0)`,
