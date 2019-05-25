@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { defineMessages } from 'react-intl'
 import { generateBlockClass, BlockClass } from '@vtex/css-handles'
 
@@ -14,18 +14,26 @@ const useMenuState = () => {
   const [isMenuOpen, setIsOpen] = useState(false)
   const [isMenuTransitioning, setIsTransitioning] = useState(false)
 
+  useEffect(() => {
+    /** Locks scroll of the root HTML element if the
+     * drawer menu is open
+     */
+    const documentElement =
+      window && window.document && window.document.documentElement
+    if (documentElement) {
+      documentElement.style.overflow = isMenuOpen ? 'hidden' : 'auto'
+    }
+
+    return () => {
+      documentElement.style.overflow = 'auto'
+    }
+  })
+
   let transitioningTimeout: number | null
 
   const setMenuOpen = (value: boolean) => {
     setIsOpen(value)
     setIsTransitioning(true)
-
-    /** Locks scroll of the root HTML element */
-    const documentElement =
-      window && window.document && window.document.documentElement
-    if (documentElement) {
-      documentElement.style.overflow = value ? 'hidden' : 'auto'
-    }
 
     if (transitioningTimeout != null) {
       clearTimeout(transitioningTimeout)
