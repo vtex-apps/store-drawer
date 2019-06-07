@@ -166,7 +166,7 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
           >
             <div className="dib">
               <button
-                className="pa4 pointer bg-transparent bn pointer"
+                className="pa4 pointer bg-transparent transparent bn pointer"
                 onClick={closeMenu}
               >
                 <IconClose size={30} type="line" />
