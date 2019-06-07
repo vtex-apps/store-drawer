@@ -156,16 +156,17 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
             style={{
               WebkitOverflowScrolling: 'touch',
               overflowY: 'scroll',
+              width: '85%',
               maxWidth: '85%',
               pointerEvents: isMenuOpen ? 'auto' : 'none',
               transform: `translate3d(${isMenuOpen ? '0' : '-100%'}, 0, 0)`,
               transition: isMenuTransitioning ? 'transform 300ms' : 'none',
-              width: 300,
+              minWidth: 300,
             }}
           >
             <div className="dib">
               <button
-                className="pa4 pointer transparent bn pointer"
+                className="pa4 pointer bg-transparent bn pointer"
                 onClick={closeMenu}
               >
                 <IconClose size={30} type="line" />
