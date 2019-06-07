@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.0.6] - 2019-06-07
+### Fixed
+- Fix typo on tachyons class.
+- Fix width of drawer.
+
 ## [0.0.5] - 2019-05-25
 ### Fixed
 - Prevent scroll from locking when the Drawer is unmounted without being closed.
