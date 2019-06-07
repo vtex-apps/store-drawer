@@ -157,11 +157,11 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
               WebkitOverflowScrolling: 'touch',
               overflowY: 'scroll',
               width: '85%',
-              maxWidth: '85%',
+              maxWidth: 450,
               pointerEvents: isMenuOpen ? 'auto' : 'none',
               transform: `translate3d(${isMenuOpen ? '0' : '-100%'}, 0, 0)`,
               transition: isMenuTransitioning ? 'transform 300ms' : 'none',
-              minWidth: 300,
+              minWidth: 280,
             }}
           >
             <div className="dib">
