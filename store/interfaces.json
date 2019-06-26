@@ -4,7 +4,8 @@
     "composition": "children",
     "allowed": [
       "menu",
-      "category-menu"
+      "category-menu",
+      "menu-force-accordion"
     ]
   }
 }
