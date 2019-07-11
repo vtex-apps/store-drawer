@@ -154,8 +154,6 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
               blockClass
             )} fixed top-0 left-0 bottom-0 bg-base z-999 flex flex-column`}
             style={{
-              WebkitOverflowScrolling: 'touch',
-              overflowY: 'scroll',
               width: '85%',
               maxWidth: 450,
               pointerEvents: isMenuOpen ? 'auto' : 'none',
@@ -172,7 +170,15 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
                 <IconClose size={30} type="line" />
               </button>
             </div>
-            <div className="flex flex-grow-1">{children}</div>
+            <div
+              className="flex flex-grow-1"
+              style={{
+                WebkitOverflowScrolling: 'touch',
+                overflowY: 'scroll',
+              }}
+            >
+              {children}
+            </div>
           </div>
         </Swipable>
       </Portal>
