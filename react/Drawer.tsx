@@ -147,7 +147,7 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
   return (
     <>
       <div
-        className={`pa4 pointer ${styles.drawerBurguer}`}
+        className={`pa4 pointer ${styles.openIconContainer}`}
         onClick={openMenu}
         aria-hidden
       >
@@ -180,10 +180,10 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
               minWidth: 280,
             }}
           >
-            <div className={`flex ${styles.drawerCloseContainer}`}>
+            <div className={`flex ${styles.closeIconButton}`}>
               <button
                 className={`pa4 pointer bg-transparent transparent bn pointer ${
-                  styles.drawerCloseButton
+                  styles.closeIconButton
                 }`}
                 onClick={closeMenu}
               >
