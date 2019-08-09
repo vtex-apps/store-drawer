@@ -146,7 +146,7 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
   return (
     <>
       <div
-        className={`pa4 pointer w-100 ${styles.drawerBurguer}`}
+        className={`pa4 pointer ${styles.drawerBurguer}`}
         onClick={openMenu}
         aria-hidden
       >
