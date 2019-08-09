@@ -80,7 +80,7 @@ To use this CSS API, you must add the `styles` builder and create an app styling
 
 #### CSS Namespaces
 
-Below, we describe the namespaces that are defined in the product-summary.
+Below, we describe the namespaces that are defined in the `store-drawer`.
 
 | Token name           | Description                                                        |
 | -------------------- | ------------------------------------------------------------------ |
