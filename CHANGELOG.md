@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- New `isFullWidth` and `slideDirection` props to `Drawer` component.
+- New `isFullWidth`, `slideDirection` and `maxWidth` props to `Drawer` component.
 - Support for `.drawerBurguer`, `drawerCloseContainer` and `drawerCloseButton` CSS handles.
 
 ## [0.1.0] - 2019-07-01
