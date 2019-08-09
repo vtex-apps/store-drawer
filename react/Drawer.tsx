@@ -122,6 +122,8 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
   // position,
   // width,
   // height,
+  isFullWidth,
+  slideDirection,
   blockClass,
   children,
 }) => {
@@ -133,10 +135,21 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
   } = useMenuState()
 
   const menuRef = useRef(null)
+  const slideFromTopToBottom = `translate3d(0, ${
+    isMenuOpen ? '0' : '-100%'
+  }, 0)`
+  const slideFromLeftToRight = `translate3d(${
+    isMenuOpen ? '0' : '-100%'
+  }, 0, 0)`
+  const isVertical = slideDirection === 'vertical'
 
   return (
     <>
-      <div className="pa4 pointer" onClick={openMenu} aria-hidden>
+      <div
+        className={`pa4 pointer w-100 ${styles.drawerBurguer}`}
+        onClick={openMenu}
+        aria-hidden
+      >
         <IconMenu size={20} />
       </div>
       <Portal>
@@ -156,17 +169,21 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
             style={{
               WebkitOverflowScrolling: 'touch',
               overflowY: 'scroll',
-              width: '85%',
+              width: isFullWidth ? '100%' : '85%',
               maxWidth: 450,
               pointerEvents: isMenuOpen ? 'auto' : 'none',
-              transform: `translate3d(${isMenuOpen ? '0' : '-100%'}, 0, 0)`,
+              transform: isVertical
+                ? slideFromTopToBottom
+                : slideFromLeftToRight,
               transition: isMenuTransitioning ? 'transform 300ms' : 'none',
               minWidth: 280,
             }}
           >
-            <div className="dib">
+            <div className={`flex ${styles.drawerCloseContainer}`}>
               <button
-                className="pa4 pointer bg-transparent transparent bn pointer"
+                className={`pa4 pointer bg-transparent transparent bn pointer ${
+                  styles.drawerCloseButton
+                }`}
                 onClick={closeMenu}
               >
                 <IconClose size={30} type="line" />
