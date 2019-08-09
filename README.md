@@ -2,8 +2,6 @@
 
 This component allows you to have a sliding drawer for your menus. This is specially handy for mobile layouts.
 
-**The instruction below are for using this component outside of the Blocks API**
-
 ## Basic Usage
 
 To configure or customize this app, you need to import it in your dependencies in your `manifest.json` file.
@@ -14,7 +12,28 @@ dependencies: {
 }
 ```
 
-and import it inside the component you want to use it in. Here's an example:
+Then, you need to add the `drawer` block into your app. The following is an example taken from [Store Theme](https://github.com/vtex-apps/store-theme).
+
+```json
+  "drawer": {
+    "children": [
+      "menu#drawer"
+    ]
+  },
+
+  "menu#drawer": {
+    "children": [
+      "menu-item#category-clothing",
+      "menu-item#category-decoration",
+      "menu-item#custom-sale"
+    ],
+    "props": {
+      "orientation": "vertical"
+    }
+  },
+```
+
+If you're using this component by itself, you just need to import it inside the component you want to use it in. Here's an example:
 
 ```tsx
 import { Drawer } from 'vtex.store-drawer'
