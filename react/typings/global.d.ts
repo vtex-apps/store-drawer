@@ -22,5 +22,6 @@ declare global {
     height: '100%' | 'auto' | 'fullscreen'
     slideDirection: 'vertical' | 'horizontal'
     isFullWidth: boolean
+    maxWidth: number | string
   }
 }
