@@ -7,17 +7,28 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [0.1.0] - 2019-07-01
 ### Added
+
+- New `isFullWidth` and `slideDirection` props to `Drawer` component.
+- Support for `.drawerBurguer`, `drawerCloseContainer` and `drawerCloseButton` CSS handles.
+
+## [0.1.0] - 2019-07-01
+
+### Added
+
 - Allow `rich-text` and `flex-layout` blocks on drawer.
 
 ## [0.0.6] - 2019-06-07
+
 ### Fixed
+
 - Fix typo on tachyons class.
 - Fix width of drawer.
 
 ## [0.0.5] - 2019-05-25
+
 ### Fixed
+
 - Prevent scroll from locking when the Drawer is unmounted without being closed.
 - Add scroll to drawer element.
 - Locks scroll on iOS
@@ -25,6 +36,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.0.4] - 2019-05-22
 
 ### Added
+
 - Added category-menu to interfaces.json
 
 ## [0.0.3] - 2019-05-03
