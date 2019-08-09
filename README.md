@@ -56,11 +56,11 @@ const Menu = () => (
 
 The Drawer component accepts a few props that allow you to customize it.
 
-| Prop name        | Type              | Description                                                                          | Default value  |
-| ---------------- | ----------------- | ------------------------------------------------------------------------------------ | -------------- |
-| `maxWidth`       | `Number | String` | Define the open Drawer's maximum width.                                              | `450`          |
-| `isFullWidth`    | `Boolean`         | Control whether or not the open Drawer should occupy the full available width.       | `false`        |
-| `slideDirection` | `Enum`            | Controls the opening animation's direction. (values: `'vertical'` or `'horizontal'`) | `'horizontal'` |
+| Prop name        | Type                 | Description                                                                          | Default value  |
+| ---------------- | -------------------- | ------------------------------------------------------------------------------------ | -------------- |
+| `maxWidth`       | `Number` or `String` | Define the open Drawer's maximum width.                                              | `450`          |
+| `isFullWidth`    | `Boolean`            | Control whether or not the open Drawer should occupy the full available width.       | `false`        |
+| `slideDirection` | `Enum`               | Controls the opening animation's direction. (values: `'vertical'` or `'horizontal'`) | `'horizontal'` |
 
 ### Styles API
 
