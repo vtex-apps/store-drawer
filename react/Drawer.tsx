@@ -122,6 +122,7 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
   // position,
   // width,
   // height,
+  maxWidth = 450,
   isFullWidth,
   slideDirection,
   blockClass,
@@ -170,7 +171,7 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
               WebkitOverflowScrolling: 'touch',
               overflowY: 'scroll',
               width: isFullWidth ? '100%' : '85%',
-              maxWidth: 450,
+              maxWidth,
               pointerEvents: isMenuOpen ? 'auto' : 'none',
               transform: isVertical
                 ? slideFromTopToBottom
