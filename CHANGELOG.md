@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- New `childrenContainer` CSS handle.
+
+### Fixed
+- Wrong CSS handle being applied to the close button.
 
 ## [0.2.2] - 2019-08-29
 
@@ -14,37 +19,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Bug in IE11
 
 ## [0.2.0] - 2019-08-12
-
 ### Added
-
 - New `isFullWidth`, `slideDirection` and `maxWidth` props to `Drawer` component.
 - Support for `.openIconContainer`, `closeIconContainer` and `closeIconButton` CSS handles.
 
 ## [0.1.0] - 2019-07-01
-
 ### Added
-
 - Allow `rich-text` and `flex-layout` blocks on drawer.
 
 ## [0.0.6] - 2019-06-07
-
 ### Fixed
-
 - Fix typo on tachyons class.
 - Fix width of drawer.
 
 ## [0.0.5] - 2019-05-25
-
 ### Fixed
-
 - Prevent scroll from locking when the Drawer is unmounted without being closed.
 - Add scroll to drawer element.
 - Locks scroll on iOS
 
 ## [0.0.4] - 2019-05-22
-
 ### Added
-
 - Added category-menu to interfaces.json
 
 ## [0.0.3] - 2019-05-03
