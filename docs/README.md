@@ -88,3 +88,4 @@ Below, we describe the namespaces that are defined in the `store-drawer`.
 | `openIconContainer`  | The container of icon that opens the Drawer when clicked.          |
 | `closeIconContainer` | The container of icon that closes the Drawer when clicked.         |
 | `closeIconButton`    | The button around of the icon that closes the Drawer when clicked. |
+| `childrenContainer`  | The container of children blocks passed to Drawer.                 |

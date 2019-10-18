@@ -1,14 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { defineMessages } from 'react-intl'
-import { generateBlockClass, BlockClass } from '@vtex/css-handles'
 
 import { IconClose, IconMenu } from 'vtex.store-icons'
+import { useCssHandles } from 'vtex.css-handles'
 
 import Overlay from './Overlay'
 import Portal from './Portal'
 import Swipable from './Swipable'
-
-import styles from './drawer.css'
 
 // https://stackoverflow.com/a/3464890/5313009
 const getScrollPosition = () => {
@@ -116,7 +114,15 @@ const useMenuState = () => {
   return { isMenuOpen, isMenuTransitioning, setMenuOpen, openMenu, closeMenu }
 }
 
-const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
+const CSS_HANDLES = [
+  'openIconContainer',
+  'drawer',
+  'closeIconContainer',
+  'childrenContainer',
+  'closeIconButton',
+]
+
+const Drawer: StorefrontComponent<DrawerSchema> = ({
   // actionIconId,
   // dismissIconId,
   // position,
@@ -125,7 +131,6 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
   maxWidth = 450,
   isFullWidth,
   slideDirection,
-  blockClass,
   children,
 }) => {
   const {
@@ -134,6 +139,7 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
     openMenu,
     closeMenu,
   } = useMenuState()
+  const handles = useCssHandles(CSS_HANDLES)
 
   const menuRef = useRef(null)
   const slideFromTopToBottom = `translate3d(0, ${
@@ -147,7 +153,7 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
   return (
     <>
       <div
-        className={`pa4 pointer ${styles.openIconContainer}`}
+        className={`pa4 pointer ${handles.openIconContainer}`}
         onClick={openMenu}
         aria-hidden
       >
@@ -163,10 +169,9 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
         >
           <div
             ref={menuRef}
-            className={`${generateBlockClass(
-              styles.drawer,
-              blockClass
-            )} fixed top-0 left-0 bottom-0 bg-base z-999 flex flex-column`}
+            className={`${
+              handles.drawer
+            } fixed top-0 left-0 bottom-0 bg-base z-999 flex flex-column`}
             style={{
               WebkitOverflowScrolling: 'touch',
               overflowY: 'scroll',
@@ -180,17 +185,19 @@ const Drawer: StorefrontComponent<DrawerSchema & BlockClass> = ({
               minWidth: 280,
             }}
           >
-            <div className={`flex ${styles.closeIconButton}`}>
+            <div className={`flex ${handles.closeIconContainer}`}>
               <button
                 className={`pa4 pointer bg-transparent transparent bn pointer ${
-                  styles.closeIconButton
+                  handles.closeIconButton
                 }`}
                 onClick={closeMenu}
               >
                 <IconClose size={30} type="line" />
               </button>
             </div>
-            <div className="flex flex-grow-1">{children}</div>
+            <div className={`${handles.childrenContainer} flex flex-grow-1`}>
+              {children}
+            </div>
           </div>
         </Swipable>
       </Portal>
