@@ -151,9 +151,7 @@ const Drawer: StorefrontComponent<
   const slideFromLeftToRight = `translate3d(${
     isMenuOpen ? '0' : '-100%'
   }, 0, 0)`
-  const slideFromRightToLeft = `translate3d(${
-    isMenuOpen ? '-100%' : '0'
-  }, 0, 0)`
+  const slideFromRightToLeft = `translate3d(${isMenuOpen ? '0' : '100%'}, 0, 0)`
 
   const resolveSlideDirection = () => {
     switch (slideDirection) {
@@ -199,7 +197,9 @@ const Drawer: StorefrontComponent<
         >
           <div
             ref={menuRef}
-            className={`${handles.drawer} fixed top-0 left-0 bottom-0 bg-base z-999 flex flex-column`}
+            className={`${handles.drawer} fixed top-0 ${
+              slideDirection === 'rightToLeft' ? 'right-0' : 'left-0'
+            } bottom-0 bg-base z-999 flex flex-column`}
             style={{
               WebkitOverflowScrolling: 'touch',
               overflowY: 'scroll',
@@ -209,7 +209,6 @@ const Drawer: StorefrontComponent<
               transform: resolveSlideDirection(),
               transition: isMenuTransitioning ? 'transform 300ms' : 'none',
               minWidth: 280,
-              left: slideDirection === 'rightToLeft' ? '100%' : undefined,
             }}
           >
             <div className={`flex ${handles.closeIconContainer}`}>
