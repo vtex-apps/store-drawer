@@ -20,7 +20,7 @@ declare global {
     position: Position
     width: '100%' | 'auto'
     height: '100%' | 'auto' | 'fullscreen'
-    slideDirection: 'vertical' | 'horizontal'
+    slideDirection: 'vertical' | 'horizontal' | 'rightToLeft' | 'leftToRight'
     isFullWidth: boolean
     maxWidth: number | string
   }
