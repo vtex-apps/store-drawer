@@ -188,11 +188,7 @@ const Drawer: StorefrontComponent<
               ? closeMenu
               : null
           }
-          onSwipeRight={
-            slideDirection === 'horizontal' || slideDirection === 'leftToRight'
-              ? null
-              : closeMenu
-          }
+          onSwipeRight={slideDirection === 'rightToLeft' ? closeMenu : null}
           rubberBanding
         >
           <div
