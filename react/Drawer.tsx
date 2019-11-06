@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, ReactElement } from 'react'
 import { defineMessages } from 'react-intl'
 
 import { IconClose, IconMenu } from 'vtex.store-icons'
@@ -122,15 +122,18 @@ const CSS_HANDLES = [
   'closeIconButton',
 ]
 
-const Drawer: StorefrontComponent<DrawerSchema> = ({
+const Drawer: StorefrontComponent<
+  DrawerSchema & { customIcon: ReactElement }
+> = ({
   // actionIconId,
   // dismissIconId,
   // position,
-  // width,
   // height,
+  width,
+  customIcon,
   maxWidth = 450,
   isFullWidth,
-  slideDirection,
+  slideDirection = 'horizontal',
   children,
 }) => {
   const {
@@ -140,15 +143,30 @@ const Drawer: StorefrontComponent<DrawerSchema> = ({
     closeMenu,
   } = useMenuState()
   const handles = useCssHandles(CSS_HANDLES)
-
   const menuRef = useRef(null)
+
   const slideFromTopToBottom = `translate3d(0, ${
     isMenuOpen ? '0' : '-100%'
   }, 0)`
   const slideFromLeftToRight = `translate3d(${
     isMenuOpen ? '0' : '-100%'
   }, 0, 0)`
-  const isVertical = slideDirection === 'vertical'
+  const slideFromRightToLeft = `translate3d(${isMenuOpen ? '0' : '100%'}, 0, 0)`
+
+  const resolveSlideDirection = () => {
+    switch (slideDirection) {
+      case 'horizontal':
+        return slideFromLeftToRight
+      case 'vertical':
+        return slideFromTopToBottom
+      case 'leftToRight':
+        return slideFromLeftToRight
+      case 'rightToLeft':
+        return slideFromRightToLeft
+      default:
+        return slideFromLeftToRight
+    }
+  }
 
   return (
     <>
@@ -157,7 +175,7 @@ const Drawer: StorefrontComponent<DrawerSchema> = ({
         onClick={openMenu}
         aria-hidden
       >
-        <IconMenu size={20} />
+        {customIcon || <IconMenu size={20} />}
       </div>
       <Portal>
         <Overlay visible={isMenuOpen} onClick={closeMenu} />
@@ -165,31 +183,33 @@ const Drawer: StorefrontComponent<DrawerSchema> = ({
         <Swipable
           enabled={isMenuOpen}
           element={menuRef && menuRef.current}
-          onSwipeLeft={closeMenu}
+          onSwipeLeft={
+            slideDirection === 'horizontal' || slideDirection === 'leftToRight'
+              ? closeMenu
+              : null
+          }
+          onSwipeRight={slideDirection === 'rightToLeft' ? closeMenu : null}
+          rubberBanding
         >
           <div
             ref={menuRef}
-            className={`${
-              handles.drawer
-            } fixed top-0 left-0 bottom-0 bg-base z-999 flex flex-column`}
+            className={`${handles.drawer} fixed top-0 ${
+              slideDirection === 'rightToLeft' ? 'right-0' : 'left-0'
+            } bottom-0 bg-base z-999 flex flex-column`}
             style={{
               WebkitOverflowScrolling: 'touch',
               overflowY: 'scroll',
-              width: isFullWidth ? '100%' : '85%',
+              width: width || (isFullWidth ? '100%' : '85%'),
               maxWidth,
               pointerEvents: isMenuOpen ? 'auto' : 'none',
-              transform: isVertical
-                ? slideFromTopToBottom
-                : slideFromLeftToRight,
+              transform: resolveSlideDirection(),
               transition: isMenuTransitioning ? 'transform 300ms' : 'none',
               minWidth: 280,
             }}
           >
             <div className={`flex ${handles.closeIconContainer}`}>
               <button
-                className={`pa4 pointer bg-transparent transparent bn pointer ${
-                  handles.closeIconButton
-                }`}
+                className={`pa4 pointer bg-transparent transparent bn pointer ${handles.closeIconButton}`}
                 onClick={closeMenu}
               >
                 <IconClose size={30} type="line" />

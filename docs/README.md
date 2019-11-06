@@ -60,7 +60,7 @@ The Drawer component accepts a few props that allow you to customize it.
 | ---------------- | -------------------- | ------------------------------------------------------------------------------------ | -------------- |
 | `maxWidth`       | `Number` or `String` | Define the open Drawer's maximum width.                                              | `450`          |
 | `isFullWidth`    | `Boolean`            | Control whether or not the open Drawer should occupy the full available width.       | `false`        |
-| `slideDirection` | `Enum`               | Controls the opening animation's direction. (values: `'vertical'` or `'horizontal'`) | `'horizontal'` |
+| `slideDirection` | `'horizontal'`&#124;`'vertical'`&#124;`'rightToLeft'`&#124;`'leftToRight'`             | Controls the opening animation's direction. | `'horizontal'` |
 
 ### Styles API
 
@@ -68,15 +68,15 @@ This app provides some CSS classes as an API for style customization.
 
 To use this CSS API, you must add the `styles` builder and create an app styling CSS file.
 
-1. Add the `styles` builder to your `manifest.json`:
+- Add the `styles` builder to your `manifest.json`:
 
 ```json
-  "builders": {
-    "styles": "1.x"
-  }
+"builders": {
+  "styles": "1.x"
+}
 ```
 
-2. Create a file called `vtex.store-drawer.css` inside the `styles/css` folder and add your custom using regular CSS.
+- Create a file called `vtex.store-drawer.css` inside the `styles/css` folder and add your custom using regular CSS.
 
 #### CSS Namespaces
 
