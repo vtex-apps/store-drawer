@@ -3,6 +3,7 @@
     "component": "Drawer",
     "composition": "children",
     "allowed": [
+      "login",
       "menu",
       "category-menu",
       "flex-layout",
