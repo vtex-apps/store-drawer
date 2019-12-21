@@ -22,6 +22,7 @@ const getScrollPosition = () => {
 }
 
 const useLockScroll = () => {
+  const initialized = useRef(false)
   const [isLocked, setLocked] = useState(false)
   type ScrollPosition = number | null
   const [lockedScrollPosition, setLockedScrollPosition] = useState<
@@ -29,6 +30,13 @@ const useLockScroll = () => {
   >(null)
 
   useEffect(() => {
+    if (!initialized.current && !isLocked) {
+      // Prevent this from running at first, if it's not locked.
+      // Important because this triggers re-layout, thus slowing
+      // down the rendering unnecessarily.
+      initialized.current = true
+      return
+    }
     /** Locks scroll of the root HTML element if the
      * drawer menu is open
      */
