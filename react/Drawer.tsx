@@ -87,12 +87,16 @@ const useLockScroll = () => {
 
 const useMenuState = () => {
   const [isMenuOpen, setIsOpen] = useState(false)
+  const [hasBeenOpened, setHasBeenOpened] = useState(false)
   const [isMenuTransitioning, setIsTransitioning] = useState(false)
   const setLockScroll = useLockScroll()
 
   let transitioningTimeout: number | null
 
   const setMenuOpen = (value: boolean) => {
+    if (!hasBeenOpened && value) {
+      setHasBeenOpened(true)
+    }
     setIsOpen(value)
     setIsTransitioning(true)
     setLockScroll(value)
@@ -111,7 +115,14 @@ const useMenuState = () => {
   const openMenu = () => setMenuOpen(true)
   const closeMenu = () => setMenuOpen(false)
 
-  return { isMenuOpen, isMenuTransitioning, setMenuOpen, openMenu, closeMenu }
+  return {
+    isMenuOpen,
+    isMenuTransitioning,
+    setMenuOpen,
+    openMenu,
+    closeMenu,
+    hasBeenOpened,
+  }
 }
 
 const CSS_HANDLES = [
@@ -141,6 +152,7 @@ const Drawer: StorefrontComponent<
     isMenuTransitioning,
     openMenu,
     closeMenu,
+    hasBeenOpened,
   } = useMenuState()
   const handles = useCssHandles(CSS_HANDLES)
   const menuRef = useRef(null)
@@ -209,14 +221,16 @@ const Drawer: StorefrontComponent<
           >
             <div className={`flex ${handles.closeIconContainer}`}>
               <button
-                className={`pa4 pointer bg-transparent transparent bn pointer ${handles.closeIconButton}`}
+                className={`pa4 pointer bg-transparent transparent bn pointer ${
+                  handles.closeIconButton
+                }`}
                 onClick={closeMenu}
               >
                 <IconClose size={30} type="line" />
               </button>
             </div>
             <div className={`${handles.childrenContainer} flex flex-grow-1`}>
-              {children}
+              {hasBeenOpened && children}
             </div>
           </div>
         </Swipable>
