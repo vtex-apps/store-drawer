@@ -2,11 +2,6 @@
   "drawer": {
     "component": "Drawer",
     "composition": "children",
-    "allowed": [
-      "menu",
-      "category-menu",
-      "flex-layout",
-      "rich-text"
-    ]
+    "allowed": "*"
   }
 }
