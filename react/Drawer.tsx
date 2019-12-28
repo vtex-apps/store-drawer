@@ -44,7 +44,14 @@ const useLockScroll = () => {
 
     const documentElement =
       window && window.document && window.document.documentElement
+
     if (documentElement) {
+      const bodyBounds = document.body.getBoundingClientRect()
+
+      document.body.style.width = shouldLockScroll
+        ? `${bodyBounds.width}px`
+        : 'auto'
+
       documentElement.style.overflow = shouldLockScroll ? 'hidden' : 'auto'
 
       /** iOS doesn't lock the scroll of the body by just setting overflow to hidden.
@@ -75,7 +82,6 @@ const useLockScroll = () => {
 
       documentElement.style.bottom = shouldLockScroll ? '0' : 'auto'
       documentElement.style.left = shouldLockScroll ? '0' : 'auto'
-      documentElement.style.right = shouldLockScroll ? '0' : 'auto'
     }
 
     return () => {
@@ -85,7 +91,7 @@ const useLockScroll = () => {
       documentElement.style.top = 'auto'
       documentElement.style.bottom = 'auto'
       documentElement.style.left = 'auto'
-      documentElement.style.right = 'auto'
+      document.body.style.width = 'auto'
     }
   }, [isLocked]) // eslint-disable-line react-hooks/exhaustive-deps
   // ☝️ no need to trigger this on lockedScrollPosition changes
