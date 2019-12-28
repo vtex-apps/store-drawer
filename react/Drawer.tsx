@@ -150,10 +150,6 @@ const CSS_HANDLES = [
 const Drawer: StorefrontComponent<
   DrawerSchema & { customIcon: ReactElement }
 > = ({
-  // actionIconId,
-  // dismissIconId,
-  // position,
-  // height,
   width,
   customIcon,
   maxWidth = 450,
