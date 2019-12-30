@@ -1,5 +1,7 @@
 // TODO: Move this to a separate npm package, along with Swipable
 
+import parseMeasure from './modules/parseMeasure'
+
 const animations = []
 
 const createAnimation = ({ object, prop, stop, isStopped }) => ({
@@ -24,18 +26,22 @@ function animate({
   prop,
   target,
   duration,
+  speed,
+  acceleration,
+  maxSpeed,
   onUpdate = null,
   onComplete = null,
 }) {
-  duration *= 1000
   const targetFps = 60
   const frameDuration = 1000 / targetFps
-  const step = frameDuration / duration
+
+  const [targetValue, targetUnit, isTargetUnitless] = parseMeasure(target)
+  const [originValue, originUnit] = parseMeasure(object[prop])
+  const unit = isTargetUnitless ? originUnit : targetUnit
+  const delta = targetValue - originValue
+
   const ease = v => v * (2 - v)
   const maxTimeMultiplier = 2
-
-  const origin = object[prop]
-  const delta = target - origin
 
   let stopped = false
 
@@ -46,9 +52,9 @@ function animate({
     stopped
   }
 
-  let p = 0
-
+  let current = duration ? 0 : originValue
   let last = null
+
   const update = now => {
     if (stopped) return
     let timeMultiplier = 1
@@ -59,20 +65,51 @@ function animate({
     }
     last = now
 
-    p += step * timeMultiplier
-    if (p >= 1) {
-      p = 1
-      if (onComplete != null) {
-        onComplete()
+    if (duration) {
+      const step = frameDuration / (duration * 1000)
+      current += step * timeMultiplier
+      if (current >= 1) {
+        current = 1
+        if (onComplete != null) {
+          onComplete()
+        }
+        stop()
       }
-      stop()
-    }
 
-    const value = origin + ease(p) * delta
-    object[prop] = value
+      const value = `${originValue + ease(current) * delta}${unit}`
 
-    if (onUpdate != null) {
-      onUpdate(value)
+      object[prop] = value
+
+      if (onUpdate != null) {
+        onUpdate(value)
+      }
+    } else if (speed) {
+      current += speed / (targetFps * timeMultiplier)
+
+      if (acceleration) {
+        speed *= acceleration
+      }
+
+      if (maxSpeed && speed > maxSpeed) {
+        speed = maxSpeed
+      }
+
+      if (
+        (speed > 0 && current >= targetValue) ||
+        (speed < 0 && current <= targetValue)
+      ) {
+        current = targetValue
+        if (onComplete != null) {
+          onComplete()
+        }
+        stop()
+      }
+      const formattedValue = `${current}${unit}`
+      object[prop] = formattedValue
+
+      if (onUpdate != null) {
+        onUpdate(formattedValue)
+      }
     }
 
     requestAnimationFrame(update)
