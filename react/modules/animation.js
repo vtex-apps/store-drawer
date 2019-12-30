@@ -1,6 +1,4 @@
-// TODO: Move this to a separate npm package, along with Swipable
-
-import parseMeasure from './modules/parseMeasure'
+import parseMeasure from './parseMeasure'
 
 const animations = []
 

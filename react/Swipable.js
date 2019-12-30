@@ -1,7 +1,5 @@
-// TODO: Move this to a separate npm package
-
 import React from 'react'
-import { animate } from './simpleAnimation'
+import { animate } from './modules/animation'
 import PropTypes from 'prop-types'
 
 const HORIZONTAL = 'horizontal'
