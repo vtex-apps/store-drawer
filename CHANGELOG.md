@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Issue where client rendering on the Portal component would be inconsistent with SSR.
+- "Accordeon effect" when opening the drawer, when the scrollbars are visible in the user's OS.
 
 ## [0.5.0] - 2019-12-27
 ### Changed
