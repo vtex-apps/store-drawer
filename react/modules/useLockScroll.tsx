@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
+import styles from '../styles.css'
 
 // https://stackoverflow.com/a/3464890/5313009
 const getScrollPosition = () => {
@@ -11,6 +12,13 @@ const getScrollPosition = () => {
     (window.pageYOffset || documentElement.scrollTop) -
     (documentElement.clientTop || 0)
   )
+}
+
+const propertiesNames = ['top', 'width'] as const
+
+interface PropertyStyle {
+  name: keyof CSSStyleDeclaration
+  value: string
 }
 
 const useLockScroll = () => {
@@ -34,17 +42,8 @@ const useLockScroll = () => {
      */
     const shouldLockScroll = isLocked
 
-    const documentElement =
-      window && window.document && window.document.documentElement
-
-    if (documentElement) {
+    if (window && window.document) {
       const bodyBounds = document.body.getBoundingClientRect()
-
-      document.body.style.width = shouldLockScroll
-        ? `${bodyBounds.width}px`
-        : 'auto'
-
-      documentElement.style.overflow = shouldLockScroll ? 'hidden' : 'auto'
 
       /** iOS doesn't lock the scroll of the body by just setting overflow to hidden.
        * It requires setting the position of the HTML element to fixed, which also
@@ -66,24 +65,36 @@ const useLockScroll = () => {
         setLockedScrollPosition(null)
       }
 
-      documentElement.style.position = shouldLockScroll ? 'fixed' : 'static'
+      const properties: PropertyStyle[] = [
+        {
+          name: 'top',
+          value: `-${scrollPosition}px`,
+        },
+        {
+          name: 'width',
+          value: `${bodyBounds.width}px`,
+        },
+      ]
 
-      documentElement.style.top = shouldLockScroll
-        ? `-${scrollPosition}px`
-        : 'auto'
+      if (shouldLockScroll) {
+        properties.forEach(prop => {
+          window.document.body.style[prop.name as any] = prop.value
+        })
 
-      documentElement.style.bottom = shouldLockScroll ? '0' : 'auto'
-      documentElement.style.left = shouldLockScroll ? '0' : 'auto'
+        window.document.body.classList.add(styles.hiddenBody)
+      } else {
+        properties.forEach(prop => {
+          window.document.body.style.removeProperty(prop.name as any)
+        })
+        window.document.body.classList.remove(styles.hiddenBody)
+      }
     }
 
     return () => {
-      documentElement.style.overflow = 'auto'
-      documentElement.style.position = 'static'
-
-      documentElement.style.top = 'auto'
-      documentElement.style.bottom = 'auto'
-      documentElement.style.left = 'auto'
-      document.body.style.width = 'auto'
+      propertiesNames.forEach(prop => {
+        window.document.body.style.removeProperty(prop)
+      })
+      window.document.body.classList.remove(styles.hiddenBody)
     }
   }, [isLocked]) // eslint-disable-line react-hooks/exhaustive-deps
   // ☝️ no need to trigger this on lockedScrollPosition changes
