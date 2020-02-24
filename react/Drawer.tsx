@@ -13,7 +13,7 @@ import Overlay from './Overlay'
 import Portal from './Portal'
 import useLockScroll from './modules/useLockScroll'
 
-const Swipable = React.lazy(() => import('./Swipable'))
+const Swipeable = React.lazy(() => import('./Swipeable'))
 
 interface MenuState {
   isOpen: boolean
@@ -160,7 +160,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
       <Portal>
         <Overlay visible={isMenuOpen} onClick={closeMenu} />
         <Suspense fallback={<React.Fragment />}>
-          <Swipable
+          <Swipeable
             {...{
               [swipeHandler]: closeMenu,
             }}
@@ -204,7 +204,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
               </div>
               {/* eslint-enable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
             </div>
-          </Swipable>
+          </Swipeable>
         </Suspense>
       </Portal>
     </>
