@@ -5,9 +5,9 @@ import React, {
   MouseEventHandler,
 } from 'react'
 import { defineMessages } from 'react-intl'
-
-import { IconClose, IconMenu } from 'vtex.store-icons'
 import { useCssHandles } from 'vtex.css-handles'
+import { IconClose, IconMenu } from 'vtex.store-icons'
+import { useChildBlock, ExtensionPoint } from 'vtex.render-runtime'
 
 import Overlay from './Overlay'
 import Portal from './Portal'
@@ -110,9 +110,9 @@ const isElementInsideLink = (
   return isElementInsideLink(parentNode, limit)
 }
 
-const Drawer: StorefrontComponent<
-  DrawerSchema & { customIcon: ReactElement }
-> = ({
+const Drawer: StorefrontComponent<DrawerSchema & {
+  customIcon: ReactElement
+}> = ({
   width,
   customIcon,
   maxWidth = 450,
@@ -121,6 +121,9 @@ const Drawer: StorefrontComponent<
   children,
 }) => {
   const handles = useCssHandles(CSS_HANDLES)
+  const hasCustomIconBlock = Boolean(
+    useChildBlock({ id: 'drawer-open-trigger' })
+  )
   const { state: menuState, openMenu, closeMenu } = useMenuState()
   const { isOpen: isMenuOpen, hasBeenOpened: hasMenuBeenOpened } = menuState
 
@@ -148,7 +151,11 @@ const Drawer: StorefrontComponent<
         onClick={openMenu}
         aria-hidden
       >
-        {customIcon || <IconMenu size={20} />}
+        {hasCustomIconBlock ? (
+          <ExtensionPoint id="drawer-open-trigger" />
+        ) : (
+          customIcon || <IconMenu size={20} />
+        )}
       </div>
       <Portal>
         <Overlay visible={isMenuOpen} onClick={closeMenu} />
