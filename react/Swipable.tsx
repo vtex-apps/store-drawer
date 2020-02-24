@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
+
 import { animate } from './modules/animation'
-import PropTypes from 'prop-types'
 import parseMeasure from './modules/parseMeasure'
 import getPointerPosition from './modules/getPointerPosition'
 
@@ -8,8 +8,98 @@ const CENTER = 'center'
 const LEFT = 'left'
 const RIGHT = 'right'
 
-export default class Swipable extends React.Component {
-  constructor(props) {
+type Position = 'center' | 'left' | 'right'
+
+interface Props {
+  children: ReactElement
+  onSwipeLeft: () => void
+  onSwipeRight: () => void
+  onTriggerChange: (
+    args: {
+      type: string
+      speed: number
+    } | null
+  ) => void
+  onLockScroll: () => void
+  onUnlockScroll: () => void
+  onDragStart: () => void
+  onDragEnd: () => void
+  onSetPosition: (args: {
+    element: ReactElement | HTMLDivElement
+    offset: number
+  }) => void
+  onUpdateOffset: (offset: number | string) => void
+  threshold: number
+  enabled: boolean
+  rubberBanding: boolean
+  element: ReactElement
+  position: Position
+  className: string
+  style: object
+  positionRight: number | string
+  positionLeft: number | string
+  preserveMomentum: boolean
+  allowOutsideDrag: boolean
+}
+
+export default class Swipable extends React.Component<Props> {
+  private dragContainer: React.RefObject<HTMLDivElement>
+  private dragStartPos: { x: number; y: number }
+  private isDragging: boolean
+  private isPointerDown: boolean
+  private isScrolling: boolean
+  private momentum: number | null
+  private momentumTimeout: NodeJS.Timeout | number | null
+  private offset: string | number
+  private offsetAnimation: { value: number | string }
+  private stopAnimation: () => void
+  private wasDragging: boolean
+  private willTrigger: {
+    type: string
+    speed: number
+  } | null
+
+  private previousDragPositions: Array<{
+    x: number
+    y: number
+    source: string
+    timeStamp: number
+  }>
+
+  public static defaultProps = {
+    onSwipeLeft: null,
+    leftTargetPosition: null,
+    onSwipeRight: null,
+    rightTargetPosition: null,
+    onTriggerChange: null,
+    position: CENTER,
+    onLockScroll: () => {},
+    onUnlockScroll: () => {},
+    onDragStart: () => {},
+    onDragEnd: () => {},
+    onSetPosition: ({
+      element,
+      offset,
+    }: {
+      element: HTMLDivElement
+      offset: number
+    }) => {
+      const unit = typeof offset === 'number' ? 'px' : ''
+      element.style.transform = `translate3d(${offset}${unit},0,0)`
+    },
+    onUpdateOffset: () => {},
+    element: null,
+    threshold: 0,
+    enabled: true,
+    rubberBanding: false,
+    style: {},
+    positionRight: '100%',
+    positionLeft: '-100%',
+    preserveMomentum: true,
+    allowOutsideDrag: false,
+  }
+
+  constructor(props: Props) {
     super(props)
 
     this.dragContainer = React.createRef()
@@ -17,6 +107,7 @@ export default class Swipable extends React.Component {
     this.stopAnimation = () => {}
     this.isPointerDown = false
     this.isDragging = false
+    this.isScrolling = false
 
     /* Used for the click event handler, which is
      * fired after mouseup is fired.
@@ -32,10 +123,10 @@ export default class Swipable extends React.Component {
       y: 0,
     }
     this.previousDragPositions = []
-    this.willTrigger = false
+    this.willTrigger = null
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     if (!window || !window.document) {
       return
     }
@@ -51,7 +142,7 @@ export default class Swipable extends React.Component {
     })
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     if (!window || !window.document) {
       return
     }
@@ -69,7 +160,7 @@ export default class Swipable extends React.Component {
 
   /* Prevents click events from firing in the event of
    * firing swipe events. */
-  handleClick = event => {
+  private handleClick = (event: Event) => {
     if (this.wasDragging || this.isPointerDown) {
       event.preventDefault()
       event.stopPropagation()
@@ -77,7 +168,7 @@ export default class Swipable extends React.Component {
     this.wasDragging = false
   }
 
-  componentDidUpdate(prevProps) {
+  public componentDidUpdate(prevProps: Props) {
     if (prevProps.enabled && !this.props.enabled && this.isPointerDown) {
       this.isPointerDown = false
     }
@@ -87,7 +178,12 @@ export default class Swipable extends React.Component {
     }
   }
 
-  updatePosition = () => {
+  private updatePosition = () => {
+    if (this.momentumTimeout) {
+      clearTimeout(this.momentumTimeout as number)
+      this.momentumTimeout = null
+    }
+
     this.offsetAnimation.value = this.offset
     animate({
       object: this.offsetAnimation,
@@ -96,19 +192,15 @@ export default class Swipable extends React.Component {
       ...(this.momentum
         ? { speed: this.momentum, acceleration: 1.25 }
         : { duration: 0.25 }),
-      onUpdate: value => {
+      onUpdate: (value: number) => {
         this.setOffset(value)
       },
     })
 
     this.momentum = null
-    if (this.momentumTimeout) {
-      clearTimeout(this.momentumTimeout)
-      this.momentumTimeout = null
-    }
   }
 
-  getOffsetFromPosition = () => {
+  private getOffsetFromPosition = () => {
     switch (this.props.position) {
       case 'center':
         return 0
@@ -116,17 +208,19 @@ export default class Swipable extends React.Component {
         return this.props.positionRight
       case 'left':
         return this.props.positionLeft
+      default:
+        return 0
     }
   }
 
-  handleDragStart = event => {
+  private handleDragStart = (event: MouseEvent | TouchEvent) => {
     if (this.isPointerDown || !this.props.enabled) {
       return
     }
 
     if (
       !this.props.allowOutsideDrag &&
-      !this.dragContainer.current.contains(event.target)
+      !this.dragContainer.current?.contains(event.target as Node)
     ) {
       return
     }
@@ -142,20 +236,25 @@ export default class Swipable extends React.Component {
       ...pos,
     }
     this.previousDragPositions = [pos]
-    this.willTrigger = false
+    this.willTrigger = null
     this.dispatchTriggerChange(this.willTrigger)
   }
 
   /** Lets the parent know that a swipe event will be triggered if the cursor
    * is released. Useful for displaying UI feedback */
-  dispatchTriggerChange = willTrigger => {
+  private dispatchTriggerChange = (
+    willTrigger: {
+      type: string
+      speed: number
+    } | null
+  ) => {
     const { onTriggerChange } = this.props
     if (onTriggerChange) {
       onTriggerChange(willTrigger)
     }
   }
 
-  handleDragMove = event => {
+  private handleDragMove = (event: TouchEvent | MouseEvent) => {
     const {
       onDragStart,
       onLockScroll,
@@ -164,69 +263,72 @@ export default class Swipable extends React.Component {
       enabled,
       rubberBanding,
     } = this.props
-    if (this.isPointerDown && !this.isScrolling) {
-      const pos = getPointerPosition(event)
 
-      if (pos === null) return
+    if (!this.isPointerDown || this.isScrolling) {
+      return
+    }
 
-      const lastPos = this.previousDragPositions[
-        this.previousDragPositions.length - 1
-      ]
+    const pos = getPointerPosition(event)
 
-      if (lastPos && pos.source !== lastPos.source) {
-        return
+    if (pos === null) return
+
+    const lastPos = this.previousDragPositions[
+      this.previousDragPositions.length - 1
+    ]
+
+    if (lastPos && pos.source !== lastPos.source) {
+      return
+    }
+
+    /* Values to determine if the dragging means either a swipe or a scroll */
+    const threshold = {
+      x: 15,
+      y: 10,
+    }
+
+    const distance = {
+      x: pos.x - this.dragStartPos.x,
+      y: pos.y - this.dragStartPos.y,
+    }
+
+    if (!this.isDragging) {
+      if (Math.abs(distance.x) >= threshold.x) {
+        this.isDragging = true
+        onDragStart()
+        onLockScroll()
+      } else if (Math.abs(distance.y) >= threshold.y) {
+        this.isScrolling = true
+      }
+    } else {
+      this.offset = distance.x
+
+      /** Either applies rubberbanding or stops dragging at the limits */
+      const limitDragging = (offset: number) => {
+        const rubberBandingMultiplier = 0.3
+        return rubberBanding ? offset * rubberBandingMultiplier : 0
       }
 
-      /* Values to determine if the dragging means either a swipe or a scroll */
-      const threshold = {
-        x: 15,
-        y: 10,
+      if (!enabled || (!onSwipeLeft && this.offset < 0)) {
+        this.offset = limitDragging(this.offset)
+      } else if (!enabled || (!onSwipeRight && this.offset > 0)) {
+        this.offset = limitDragging(this.offset)
       }
 
-      const distance = {
-        x: pos.x - this.dragStartPos.x,
-        y: pos.y - this.dragStartPos.y,
+      this.setOffset(this.offset)
+      this.previousDragPositions.push(pos)
+
+      const willTrigger = this.checkTrigger()
+
+      // eslint-disable-next-line eqeqeq
+      if (this.willTrigger != willTrigger) {
+        this.dispatchTriggerChange(willTrigger)
       }
 
-      if (!this.isDragging) {
-        if (Math.abs(distance.x) >= threshold.x) {
-          this.isDragging = true
-          onDragStart()
-          onLockScroll()
-        } else if (Math.abs(distance.y) >= threshold.y) {
-          this.isScrolling = true
-        }
-      } else {
-        this.offset = distance.x
-
-        /** Either applies rubberbanding or stops dragging at the limits */
-        const limitDragging = offset => {
-          const rubberBandingMultiplier = 0.3
-          return rubberBanding ? offset * rubberBandingMultiplier : 0
-        }
-
-        if (!enabled || (!onSwipeLeft && this.offset < 0)) {
-          this.offset = limitDragging(this.offset)
-        } else if (!enabled || (!onSwipeRight && this.offset > 0)) {
-          this.offset = limitDragging(this.offset)
-        }
-
-        this.setOffset(this.offset)
-        this.previousDragPositions.push(pos)
-
-        const willTrigger = this.checkTrigger()
-
-        if (this.willTrigger !== willTrigger) {
-          this.dispatchTriggerChange(willTrigger)
-        }
-
-        this.willTrigger = willTrigger
-      }
+      this.willTrigger = willTrigger
     }
   }
 
-  setOffset = offset => {
-    this.offset = offset
+  private setOffset = (offset: number) => {
     if (this.dragContainer && this.dragContainer.current) {
       this.props.onSetPosition({
         element: this.props.element || this.dragContainer.current,
@@ -234,15 +336,18 @@ export default class Swipable extends React.Component {
       })
       this.props.onUpdateOffset(offset)
     }
+
+    this.offset = offset
   }
 
-  setMomentum = (momentum, target) => {
-    const [, targetUnit] = parseMeasure(target)
+  private setMomentum = (momentum: number, target: number | string) => {
+    const [, targetUnit] = parseMeasure(target) ?? []
+    if (this.dragContainer.current == null) return
 
     if (targetUnit === '%') {
       const bounds = this.dragContainer.current.getBoundingClientRect()
-      const width = bounds.width
-      this.offset = `${(this.offset / width) * 100}%`
+      const { width } = bounds
+      this.offset = `${(Number(this.offset) / width) * 100}%`
       momentum = (momentum / width) * 100
     }
     this.momentum = momentum
@@ -250,7 +355,7 @@ export default class Swipable extends React.Component {
     /* Lets momentum live only for a brief time. If position changes in this meantime,
      * then momentum is applied. Otherwise it's ignored and a regular transition is done */
     if (this.momentumTimeout) {
-      clearTimeout(this.momentumTimeout)
+      clearTimeout(this.momentumTimeout as number)
     }
     this.momentumTimeout = setTimeout(() => {
       this.momentum = null
@@ -260,7 +365,7 @@ export default class Swipable extends React.Component {
 
   /** Checks if the mouse/touch movement at the time of release triggers a
    * swipe, and if so, to which direction */
-  checkTrigger = () => {
+  private checkTrigger = () => {
     if (!this.props.enabled) {
       return null
     }
@@ -274,13 +379,14 @@ export default class Swipable extends React.Component {
         .slice(-samples)
         .map((cur, i, arr) => {
           const last = arr[i - 1]
-          if (last == null) {
-            return null
-          }
+          // if (last == null) {
+          //   return null
+          // }
           return cur.x - last.x
         })
         .filter(cur => cur != null)
-        .reduce((sum, cur) => sum + cur / samples, 0) * fps
+        .reduce((sum, cur) => Number(sum) + Number(cur) / Number(samples), 0) *
+      fps
 
     const { onSwipeLeft, onSwipeRight } = this.props
 
@@ -306,7 +412,7 @@ export default class Swipable extends React.Component {
     return null
   }
 
-  handleDragEnd = event => {
+  private handleDragEnd = (event: Event) => {
     if (this.isPointerDown && this.isDragging) {
       event.preventDefault()
       event.stopPropagation()
@@ -325,6 +431,8 @@ export default class Swipable extends React.Component {
             }
             this.props.onSwipeRight()
             break
+          default:
+            break
         }
       } else {
         this.offsetAnimation.value = this.offset
@@ -333,7 +441,7 @@ export default class Swipable extends React.Component {
           prop: 'value',
           target: 0,
           duration: 0.2,
-          onUpdate: value => {
+          onUpdate: (value: number) => {
             this.setOffset(value)
           },
         })
@@ -346,7 +454,7 @@ export default class Swipable extends React.Component {
     this.isPointerDown = false
   }
 
-  render() {
+  public render() {
     return (
       <div
         aria-hidden
@@ -361,55 +469,4 @@ export default class Swipable extends React.Component {
       </div>
     )
   }
-}
-
-Swipable.propTypes = {
-  children: PropTypes.node,
-  onSwipeLeft: PropTypes.func,
-  onSwipeRight: PropTypes.func,
-  onTriggerChange: PropTypes.func,
-  onLockScroll: PropTypes.func,
-  onUnlockScroll: PropTypes.func,
-  onDragStart: PropTypes.func,
-  onDragEnd: PropTypes.func,
-  onSetPosition: PropTypes.func,
-  onUpdateOffset: PropTypes.func,
-  threshold: PropTypes.number,
-  enabled: PropTypes.bool,
-  rubberBanding: PropTypes.bool,
-  element: PropTypes.element,
-  position: PropTypes.oneOf([CENTER, LEFT, RIGHT]),
-  className: PropTypes.string,
-  style: PropTypes.object,
-  positionRight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  positionLeft: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  preserveMomentum: PropTypes.bool,
-  allowOutsideDrag: PropTypes.bool,
-}
-
-Swipable.defaultProps = {
-  onSwipeLeft: null,
-  leftTargetPosition: null,
-  onSwipeRight: null,
-  rightTargetPosition: null,
-  onTriggerChange: null,
-  position: CENTER,
-  onLockScroll: () => {},
-  onUnlockScroll: () => {},
-  onDragStart: () => {},
-  onDragEnd: () => {},
-  onSetPosition: ({ element, offset }) => {
-    const unit = typeof offset === 'number' ? 'px' : ''
-    element.style.transform = `translate3d(${offset}${unit},0,0)`
-  },
-  onUpdateOffset: () => {},
-  element: null,
-  threshold: 0,
-  enabled: true,
-  rubberBanding: false,
-  style: {},
-  positionRight: '100%',
-  positionLeft: '-100%',
-  preserveMomentum: true,
-  allowOutsideDrag: false,
 }
