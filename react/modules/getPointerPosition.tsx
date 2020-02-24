@@ -3,7 +3,7 @@ function isMouseEvent(event: TouchEvent | MouseEvent): event is MouseEvent {
 }
 
 function isTouchEvent(event: TouchEvent | MouseEvent): event is TouchEvent {
-  const touches = (event as TouchEvent).touches
+  const { touches } = event as TouchEvent
   if (!touches) return false
   return touches.length > 0
 }
@@ -22,6 +22,7 @@ export default function getPointerPosition(event: TouchEvent | MouseEvent) {
     return null
   }
 
+  // eslint-disable-next-line prefer-destructuring
   const touch = event.touches[0]
 
   return {

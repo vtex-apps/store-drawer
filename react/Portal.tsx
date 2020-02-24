@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { useSSR } from 'vtex.render-runtime'
 
 const Portal: FunctionComponent = ({ children }) => {
-  const body = window && window.document && window.document.body
+  const body = window?.document?.body
   const isSSR = useSSR()
 
   if (!body || isSSR) {

@@ -1,10 +1,10 @@
 import { useRef, useState, useEffect } from 'react'
+
 import styles from '../styles.css'
 
 // https://stackoverflow.com/a/3464890/5313009
 const getScrollPosition = () => {
-  const documentElement =
-    window && window.document && window.document.documentElement
+  const documentElement = window?.document?.documentElement
   if (!documentElement) {
     return 0
   }
@@ -42,7 +42,7 @@ const useLockScroll = () => {
      */
     const shouldLockScroll = isLocked
 
-    if (window && window.document) {
+    if (window?.document) {
       const bodyBounds = document.body.getBoundingClientRect()
 
       /** iOS doesn't lock the scroll of the body by just setting overflow to hidden.
@@ -61,7 +61,7 @@ const useLockScroll = () => {
       }
 
       if (lockedScrollPosition != null && !shouldLockScroll) {
-        window && window.scrollTo(0, scrollPosition)
+        window?.scrollTo(0, scrollPosition)
         setLockedScrollPosition(null)
       }
 
