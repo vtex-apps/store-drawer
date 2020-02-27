@@ -1,4 +1,10 @@
-import React, { ReactElement, Suspense, useReducer } from 'react'
+import React, {
+  ReactElement,
+  Suspense,
+  useReducer,
+  useRef,
+  useEffect,
+} from 'react'
 import { defineMessages } from 'react-intl'
 
 import { IconClose, IconMenu } from 'vtex.store-icons'
@@ -69,6 +75,42 @@ const CSS_HANDLES = [
   'closeIconButton',
 ]
 
+// This is a totally valid use case for any, eslint.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isHTMLElement(x: any): x is HTMLElement {
+  return !!x.tagName
+}
+
+const isLink = (element: HTMLElement) => {
+  return String(element.tagName).toUpperCase() === 'A'
+}
+
+const isElementInsideLink = (
+  node: HTMLElement | null,
+  container?: HTMLElement
+): boolean => {
+  if (!node || !isHTMLElement(node)) {
+    return false
+  }
+
+  if (isLink(node)) {
+    return true
+  }
+
+  const { parentNode } = node
+
+  if (
+    !parentNode ||
+    !isHTMLElement(parentNode) ||
+    parentNode.tagName.toUpperCase() === 'BODY' ||
+    (container && parentNode === container)
+  ) {
+    return false
+  }
+
+  return isElementInsideLink(parentNode, container)
+}
+
 const Drawer: StorefrontComponent<
   DrawerSchema & { customIcon: ReactElement }
 > = ({
@@ -79,9 +121,32 @@ const Drawer: StorefrontComponent<
   slideDirection = 'horizontal',
   children,
 }) => {
+  const handles = useCssHandles(CSS_HANDLES)
   const { state: menuState, openMenu, closeMenu } = useMenuState()
   const { isOpen: isMenuOpen, hasBeenOpened: hasMenuBeenOpened } = menuState
-  const handles = useCssHandles(CSS_HANDLES)
+  const childrenContainer = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const element = childrenContainer.current
+
+    if (!element) {
+      return
+    }
+
+    const handleContainerClick = (event: MouseEvent) => {
+      const { target } = event
+
+      if (isElementInsideLink(target as HTMLElement, element)) {
+        closeMenu()
+      }
+    }
+
+    element.addEventListener('click', handleContainerClick)
+
+    return () => {
+      element.removeEventListener('click', handleContainerClick)
+    }
+  }, [childrenContainer, isMenuOpen, closeMenu])
 
   const direction =
     slideDirection === 'horizontal' || slideDirection === 'leftToRight'
@@ -133,7 +198,10 @@ const Drawer: StorefrontComponent<
                   <IconClose size={30} type="line" />
                 </button>
               </div>
-              <div className={`${handles.childrenContainer} flex flex-grow-1`}>
+              <div
+                className={`${handles.childrenContainer} flex flex-grow-1 b--red`}
+                ref={childrenContainer}
+              >
                 {hasMenuBeenOpened && children}
               </div>
             </div>
