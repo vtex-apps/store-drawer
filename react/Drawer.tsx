@@ -125,9 +125,11 @@ const Drawer: StorefrontComponent<
   const { isOpen: isMenuOpen, hasBeenOpened: hasMenuBeenOpened } = menuState
 
   const handleContainerClick: MouseEventHandler<HTMLElement> = event => {
-    const { target } = event
+    // target is the clicked element
+    // currentTarget is the element which was attached the event (e.g. the container)
+    const { target, currentTarget } = event
 
-    if (isElementInsideLink(target as HTMLElement)) {
+    if (isElementInsideLink(target as HTMLElement, currentTarget)) {
       closeMenu()
     }
   }
