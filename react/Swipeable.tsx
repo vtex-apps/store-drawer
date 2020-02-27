@@ -304,8 +304,9 @@ export default class Swipeable extends React.Component<Props> {
 
       /** Either applies rubberbanding or stops dragging at the limits */
       const limitDragging = (offset: number) => {
-        const rubberBandingMultiplier = 0.3
-        return rubberBanding ? offset * rubberBandingMultiplier : 0
+        const RUBBER_BANDING_MULTIPLIER = 0.3
+
+        return rubberBanding ? offset * RUBBER_BANDING_MULTIPLIER : 0
       }
 
       if (!enabled || (!onSwipeLeft && this.offset < 0)) {
