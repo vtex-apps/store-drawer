@@ -121,9 +121,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
   children,
 }) => {
   const handles = useCssHandles(CSS_HANDLES)
-  const hasCustomIconBlock = Boolean(
-    useChildBlock({ id: 'drawer-open-trigger' })
-  )
+  const hasTriggerBlock = Boolean(useChildBlock({ id: 'drawer-trigger' }))
   const { state: menuState, openMenu, closeMenu } = useMenuState()
   const { isOpen: isMenuOpen, hasBeenOpened: hasMenuBeenOpened } = menuState
 
@@ -151,7 +149,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
         onClick={openMenu}
         aria-hidden
       >
-        {hasCustomIconBlock ? (
+        {hasTriggerBlock ? (
           <ExtensionPoint id="drawer-open-trigger" />
         ) : (
           customIcon || <IconMenu size={20} />

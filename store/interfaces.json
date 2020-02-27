@@ -2,10 +2,10 @@
   "drawer": {
     "component": "Drawer",
     "composition": "children",
-    "allowed": ["drawer-open-trigger"]
+    "allowed": ["drawer-trigger"]
   },
-  "drawer-open-trigger": {
-    "component": "DrawerOpenTrigger",
+  "drawer-trigger": {
+    "component": "DrawerTrigger",
     "composition": "children"
   }
 }

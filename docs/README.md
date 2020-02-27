@@ -33,17 +33,17 @@ Then, you need to add the `drawer` block into your app. The following is an exam
 },
 ```
 
-There is also a block that can be used for customizing the icon that triggers the opening of the drawer, it's called `"drawer-open-trigger"` and can be used as follows:
+There is also a block that can be used for customizing the icon that triggers the opening of the drawer, it's called `"drawer-trigger"` and can be used as follows:
 
 ```json
 "drawer": {
   "children": [
     "menu#drawer"
   ],
-  "blocks": ["drawer-open-trigger"]
+  "blocks": ["drawer-trigger"]
 },
 
-"drawer-open-trigger": {
+"drawer-trigger": {
   "children": ["rich-text#open-drawer"]
 },
 
