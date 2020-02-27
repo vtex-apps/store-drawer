@@ -188,7 +188,7 @@ const Drawer: StorefrontComponent<
                * handle keyboard events specifically */}
               {/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
               <div
-                className={`${handles.childrenContainer} flex flex-grow-1 b--red`}
+                className={`${handles.childrenContainer} flex flex-grow-1`}
                 onClick={handleContainerClick}
               >
                 {hasMenuBeenOpened && children}
