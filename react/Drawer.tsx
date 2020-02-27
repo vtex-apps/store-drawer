@@ -2,8 +2,7 @@ import React, {
   ReactElement,
   Suspense,
   useReducer,
-  useRef,
-  useEffect,
+  MouseEventHandler,
 } from 'react'
 import { defineMessages } from 'react-intl'
 
@@ -124,29 +123,14 @@ const Drawer: StorefrontComponent<
   const handles = useCssHandles(CSS_HANDLES)
   const { state: menuState, openMenu, closeMenu } = useMenuState()
   const { isOpen: isMenuOpen, hasBeenOpened: hasMenuBeenOpened } = menuState
-  const childrenContainer = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const element = childrenContainer.current
+  const handleContainerClick: MouseEventHandler<HTMLElement> = event => {
+    const { target } = event
 
-    if (!element) {
-      return
+    if (isElementInsideLink(target as HTMLElement)) {
+      closeMenu()
     }
-
-    const handleContainerClick = (event: MouseEvent) => {
-      const { target } = event
-
-      if (isElementInsideLink(target as HTMLElement, element)) {
-        closeMenu()
-      }
-    }
-
-    element.addEventListener('click', handleContainerClick)
-
-    return () => {
-      element.removeEventListener('click', handleContainerClick)
-    }
-  }, [childrenContainer, isMenuOpen, closeMenu])
+  }
 
   const direction =
     slideDirection === 'horizontal' || slideDirection === 'leftToRight'
@@ -198,12 +182,18 @@ const Drawer: StorefrontComponent<
                   <IconClose size={30} type="line" />
                 </button>
               </div>
+              {/* The onClick handler below is done to fix a bug regarding drawers that wouldn't close when
+               * navigating to the same page (e.g. from a search result page to another). It is not an element
+               * intended to be clicked directly, so there's probably no need for it to have a role and to
+               * handle keyboard events specifically */}
+              {/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
               <div
                 className={`${handles.childrenContainer} flex flex-grow-1 b--red`}
-                ref={childrenContainer}
+                onClick={handleContainerClick}
               >
                 {hasMenuBeenOpened && children}
               </div>
+              {/* eslint-enable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
             </div>
           </Swipable>
         </Suspense>
