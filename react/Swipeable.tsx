@@ -379,14 +379,13 @@ export default class Swipeable extends React.Component<Props> {
         .slice(-samples)
         .map((cur, i, arr) => {
           const last = arr[i - 1]
-          // if (last == null) {
-          //   return null
-          // }
+          if (last == null) {
+            return null
+          }
           return cur.x - last.x
         })
         .filter(cur => cur != null)
-        .reduce((sum, cur) => Number(sum) + Number(cur) / Number(samples), 0) *
-      fps
+        .reduce((sum: number, cur) => sum + (cur ?? 0) / samples, 0) * fps
 
     const { onSwipeLeft, onSwipeRight } = this.props
 
