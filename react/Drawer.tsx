@@ -78,10 +78,10 @@ const CSS_HANDLES = [
 // This is a totally valid use case for any, eslint.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isHTMLElement(x: any): x is HTMLElement {
-  return !!x.tagName
+  return 'tagName' in x
 }
 
-const isLink = (element: HTMLElement) => {
+function isLink(element: HTMLElement): element is HTMLAnchorElement {
   return String(element.tagName).toUpperCase() === 'A'
 }
 
