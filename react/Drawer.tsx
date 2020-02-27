@@ -87,7 +87,7 @@ const isLink = (element: HTMLElement) => {
 
 const isElementInsideLink = (
   node: HTMLElement | null,
-  container?: HTMLElement
+  limit?: HTMLElement
 ): boolean => {
   if (!node || !isHTMLElement(node)) {
     return false
@@ -103,12 +103,12 @@ const isElementInsideLink = (
     !parentNode ||
     !isHTMLElement(parentNode) ||
     parentNode.tagName.toUpperCase() === 'BODY' ||
-    (container && parentNode === container)
+    (limit && parentNode === limit)
   ) {
     return false
   }
 
-  return isElementInsideLink(parentNode, container)
+  return isElementInsideLink(parentNode, limit)
 }
 
 const Drawer: StorefrontComponent<
