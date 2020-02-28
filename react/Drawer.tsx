@@ -1,4 +1,9 @@
-import React, { ReactElement, Suspense, useReducer } from 'react'
+import React, {
+  ReactElement,
+  Suspense,
+  useReducer,
+  MouseEventHandler,
+} from 'react'
 import { defineMessages } from 'react-intl'
 
 import { IconClose, IconMenu } from 'vtex.store-icons'
@@ -69,6 +74,42 @@ const CSS_HANDLES = [
   'closeIconButton',
 ]
 
+// This is a totally valid use case for any, eslint.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isHTMLElement(x: any): x is HTMLElement {
+  return 'tagName' in x
+}
+
+function isLink(element: HTMLElement): element is HTMLAnchorElement {
+  return String(element.tagName).toUpperCase() === 'A'
+}
+
+const isElementInsideLink = (
+  node: HTMLElement | null,
+  limit?: HTMLElement
+): boolean => {
+  if (!node || !isHTMLElement(node)) {
+    return false
+  }
+
+  if (isLink(node)) {
+    return true
+  }
+
+  const { parentNode } = node
+
+  if (
+    !parentNode ||
+    !isHTMLElement(parentNode) ||
+    parentNode.tagName.toUpperCase() === 'BODY' ||
+    (limit && parentNode === limit)
+  ) {
+    return false
+  }
+
+  return isElementInsideLink(parentNode, limit)
+}
+
 const Drawer: StorefrontComponent<
   DrawerSchema & { customIcon: ReactElement }
 > = ({
@@ -79,9 +120,19 @@ const Drawer: StorefrontComponent<
   slideDirection = 'horizontal',
   children,
 }) => {
+  const handles = useCssHandles(CSS_HANDLES)
   const { state: menuState, openMenu, closeMenu } = useMenuState()
   const { isOpen: isMenuOpen, hasBeenOpened: hasMenuBeenOpened } = menuState
-  const handles = useCssHandles(CSS_HANDLES)
+
+  const handleContainerClick: MouseEventHandler<HTMLElement> = event => {
+    // target is the clicked element
+    // currentTarget is the element which was attached the event (e.g. the container)
+    const { target, currentTarget } = event
+
+    if (isElementInsideLink(target as HTMLElement, currentTarget)) {
+      closeMenu()
+    }
+  }
 
   const direction =
     slideDirection === 'horizontal' || slideDirection === 'leftToRight'
@@ -133,9 +184,18 @@ const Drawer: StorefrontComponent<
                   <IconClose size={30} type="line" />
                 </button>
               </div>
-              <div className={`${handles.childrenContainer} flex flex-grow-1`}>
+              {/* The onClick handler below is done to fix a bug regarding drawers that wouldn't close when
+               * navigating to the same page (e.g. from a search result page to another). It is not an element
+               * intended to be clicked directly, so there's probably no need for it to have a role and to
+               * handle keyboard events specifically */}
+              {/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+              <div
+                className={`${handles.childrenContainer} flex flex-grow-1`}
+                onClick={handleContainerClick}
+              >
                 {hasMenuBeenOpened && children}
               </div>
+              {/* eslint-enable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
             </div>
           </Swipable>
         </Suspense>
