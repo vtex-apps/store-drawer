@@ -42,7 +42,7 @@ interface Props {
   allowOutsideDrag: boolean
 }
 
-export default class Swipeable extends React.Component<Props> {
+export default class Swipable extends React.Component<Props> {
   private dragContainer: React.RefObject<HTMLDivElement>
   private dragStartPos: { x: number; y: number }
   private isDragging: boolean
