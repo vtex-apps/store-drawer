@@ -14,10 +14,9 @@ function parseMeasure(value: Measure): ParsedMeasure | null {
   if (!matchResult) {
     return null
   }
-  const parsedValue = matchResult[1]
-  const parsedUnit = matchResult[2]
+  const [, parsedValue, parsedUnit] = matchResult
 
-  return [parseInt(parsedValue), parsedUnit, false]
+  return [parseInt(parsedValue, 10), parsedUnit, false]
 }
 
 export default parseMeasure

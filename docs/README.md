@@ -33,6 +33,36 @@ Then, you need to add the `drawer` block into your app. The following is an exam
 },
 ```
 
+There is also a block that can be used for customizing the icon that triggers the opening of the drawer, it's called `"drawer-trigger"` and can be used as follows:
+
+```json
+"drawer": {
+  "children": [
+    "menu#drawer"
+  ],
+  "blocks": ["drawer-trigger"]
+},
+
+"drawer-trigger": {
+  "children": ["rich-text#open-drawer"]
+},
+
+"rich-text#open-drawer": {
+  "text": "Open drawer"
+}
+
+"menu#drawer": {
+  "children": [
+    "menu-item#category-clothing",
+    "menu-item#category-decoration",
+    "menu-item#custom-sale"
+  ],
+  "props": {
+    "orientation": "vertical"
+  }
+},
+```
+
 If you're using this component by itself, you just need to import it inside the component you want to use it in. Here's an example:
 
 ```tsx
