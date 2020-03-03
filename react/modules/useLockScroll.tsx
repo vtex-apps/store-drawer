@@ -61,7 +61,7 @@ const useLockScroll = () => {
       }
 
       if (lockedScrollPosition != null && !shouldLockScroll) {
-        window?.scrollTo(0, scrollPosition)
+        window?.scrollTo?.(0, scrollPosition)
         setLockedScrollPosition(null)
       }
 
