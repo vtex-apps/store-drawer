@@ -47,7 +47,7 @@ function animate({
     stopped = true
   }
   const isStopped = () => {
-    stopped
+    return stopped
   }
 
   let current = duration ? 0 : originValue
