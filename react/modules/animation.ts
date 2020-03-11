@@ -4,12 +4,17 @@ interface Animation {
   prop: string
   object: { [prop: string]: Measure }
   isStopped: () => boolean
-  stop: any
+  stop: () => void
 }
 
 const animations: Animation[] = []
 
-const createAnimation = ({ object, prop, stop, isStopped }: Animation): Animation => ({
+const createAnimation = ({
+  object,
+  prop,
+  stop,
+  isStopped,
+}: Animation): Animation => ({
   object,
   prop,
   stop,
