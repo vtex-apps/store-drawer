@@ -63,8 +63,8 @@ There is also a block that can be used for customizing the icon that triggers th
 },
 ```
 
-And there is a block that enables customization of the icon that closes the drawer. It's called `"drawer-close"` and can be used in a similar way as
-`"drawer-trigger"`, here is an example:
+And there is a block that enables customization of the header that contains the button which closes the drawer.
+It's called `"drawer-header"` and can be used in a similar way as `"drawer-trigger"`, here is an example:
 
 ```jsonc
 // inside blocks.json
