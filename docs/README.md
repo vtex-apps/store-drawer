@@ -63,6 +63,26 @@ There is also a block that can be used for customizing the icon that triggers th
 },
 ```
 
+And there is a block that enables customization of the icon that closes the drawer. It's called `"drawer-close"` and can be used in a similar way as
+`"drawer-trigger"`, here is an example:
+
+```jsonc
+// inside blocks.json
+{
+  "drawer": {
+    "blocks": ["drawer-close#my-drawer"]
+  },
+  "drawer-close#my-drawer": {
+    "children": [
+      // you need to include the block `drawer-close-button` somewhere inside here
+      "flex-layout.row#something",
+      // ...
+      "drawer-close-button"
+    ]
+  }
+}
+```
+
 If you're using this component by itself, you just need to import it inside the component you want to use it in. Here's an example:
 
 ```tsx
