@@ -1,4 +1,4 @@
-type Measure = number | string
+export type Measure = number | string
 
 type Value = number
 type Unit = string
