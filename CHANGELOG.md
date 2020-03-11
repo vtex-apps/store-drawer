@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - New block `drawer-header` and `drawer-close-button`.
 
+### Fixed
+- Drawer trigger block never being rendered.
+
 ## [0.8.1] - 2020-03-11
 ### Fixed
 - Correctly identify if animation is stopped or not.

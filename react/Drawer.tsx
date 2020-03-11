@@ -164,7 +164,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
         aria-hidden
       >
         {hasTriggerBlock ? (
-          <ExtensionPoint id="drawer-open-trigger" />
+          <ExtensionPoint id="drawer-trigger" />
         ) : (
           customIcon ?? <IconMenu size={20} />
         )}
