@@ -15,6 +15,7 @@ import { useChildBlock, ExtensionPoint } from 'vtex.render-runtime'
 import Overlay from './Overlay'
 import Portal from './Portal'
 import useLockScroll from './modules/useLockScroll'
+import DrawerCloseButton from './DrawerCloseButton'
 
 const Swipable = React.lazy(() => import('./Swipable'))
 
@@ -143,6 +144,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
 }) => {
   const handles = useCssHandles(CSS_HANDLES)
   const hasTriggerBlock = Boolean(useChildBlock({ id: 'drawer-trigger' }))
+  const hasCloseBlock = Boolean(useChildBlock({ id: 'drawer-close' }))
   const { state: menuState, openMenu, closeMenu } = useMenuState()
   const { isOpen: isMenuOpen, hasBeenOpened: hasMenuBeenOpened } = menuState
 
@@ -211,7 +213,11 @@ const Drawer: StorefrontComponent<DrawerSchema & {
                 overflowY: 'scroll',
               }}
             >
-              <ExtensionPoint id="drawer-close" />
+              {hasCloseBlock ? (
+                <ExtensionPoint id="drawer-close" />
+              ) : (
+                <DrawerCloseButton />
+              )}
               {/* The onClick handler below is done to fix a bug regarding drawers that wouldn't close when
                * navigating to the same page (e.g. from a search result page to another). It is not an element
                * intended to be clicked directly, so there's probably no need for it to have a role and to
