@@ -1,8 +1,8 @@
 {
   "drawer": {
-    "blocks": ["drawer-close"]
+    "blocks": ["drawer-header"]
   },
-  "drawer-close": {
+  "drawer-header": {
     "children": ["drawer-close-button"]
   }
 }

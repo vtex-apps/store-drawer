@@ -15,6 +15,7 @@ import Portal from './Portal'
 import useLockScroll from './modules/useLockScroll'
 import DrawerCloseButton from './DrawerCloseButton'
 import { DrawerContextProvider } from './DrawerContext'
+import DrawerHeader from './DrawerHeader'
 
 const Swipable = React.lazy(() => import('./Swipable'))
 
@@ -69,13 +70,7 @@ const useMenuState = () => {
   }
 }
 
-const CSS_HANDLES = [
-  'openIconContainer',
-  'drawer',
-  'closeIconContainer',
-  'childrenContainer',
-  'closeIconButton',
-]
+const CSS_HANDLES = ['openIconContainer', 'drawer', 'childrenContainer']
 
 // This is a totally valid use case for any, eslint.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -114,18 +109,20 @@ const isElementInsideLink = (
 }
 
 const Drawer: StorefrontComponent<DrawerSchema & {
-  customIcon: ReactElement
+  customIcon?: ReactElement
+  header?: ReactElement
 }> = ({
   width,
   customIcon,
   maxWidth = 450,
   isFullWidth,
   slideDirection = 'horizontal',
+  header,
   children,
 }) => {
   const handles = useCssHandles(CSS_HANDLES)
   const hasTriggerBlock = Boolean(useChildBlock({ id: 'drawer-trigger' }))
-  const hasCloseBlock = Boolean(useChildBlock({ id: 'drawer-close' }))
+  const hasHeaderBlock = Boolean(useChildBlock({ id: 'drawer-header' }))
   const { state: menuState, openMenu, closeMenu } = useMenuState()
   const { isOpen: isMenuOpen, hasBeenOpened: hasMenuBeenOpened } = menuState
 
@@ -165,7 +162,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
         {hasTriggerBlock ? (
           <ExtensionPoint id="drawer-open-trigger" />
         ) : (
-          customIcon || <IconMenu size={20} />
+          customIcon ?? <IconMenu size={20} />
         )}
       </div>
       <Portal>
@@ -194,10 +191,14 @@ const Drawer: StorefrontComponent<DrawerSchema & {
                 overflowY: 'scroll',
               }}
             >
-              {hasCloseBlock ? (
-                <ExtensionPoint id="drawer-close" />
+              {hasHeaderBlock ? (
+                <ExtensionPoint id="drawer-header" />
               ) : (
-                <DrawerCloseButton />
+                header ?? (
+                  <DrawerHeader>
+                    <DrawerCloseButton />
+                  </DrawerHeader>
+                )
               )}
               {/* The onClick handler below is done to fix a bug regarding drawers that wouldn't close when
                * navigating to the same page (e.g. from a search result page to another). It is not an element

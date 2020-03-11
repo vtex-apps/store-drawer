@@ -2,13 +2,14 @@
   "drawer": {
     "component": "Drawer",
     "composition": "children",
-    "allowed": ["drawer-trigger", "drawer-close"]
+    "allowed": ["drawer-trigger", "drawer-header"]
   },
   "drawer-trigger": {
     "component": "DrawerTrigger",
     "composition": "children"
   },
-  "drawer-close": {
+  "drawer-header": {
+    "component": "DrawerHeader",
     "composition": "children"
   },
   "drawer-close-button": {

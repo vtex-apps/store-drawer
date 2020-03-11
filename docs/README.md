@@ -70,9 +70,9 @@ And there is a block that enables customization of the icon that closes the draw
 // inside blocks.json
 {
   "drawer": {
-    "blocks": ["drawer-close#my-drawer"]
+    "blocks": ["drawer-header#my-drawer"]
   },
-  "drawer-close#my-drawer": {
+  "drawer-header#my-drawer": {
     "children": [
       // you need to include the block `drawer-close-button` somewhere inside here
       "flex-layout.row#something",
@@ -86,10 +86,16 @@ And there is a block that enables customization of the icon that closes the draw
 If you're using this component by itself, you just need to import it inside the component you want to use it in. Here's an example:
 
 ```tsx
-import { Drawer } from 'vtex.store-drawer'
+import { Drawer, DrawerHeader, DrawerCloseButton } from 'vtex.store-drawer'
 
 const Menu = () => (
-  <Drawer>
+  <Drawer
+    header={
+      <DrawerHeader>
+        <DrawerCloseButton />
+      </DrawerHeader>
+    }
+  >
     <ul>
       <li>Link 1</li>
       <li>Link 2</li>
@@ -135,6 +141,7 @@ Below, we describe the namespaces that are defined in the `store-drawer`.
 | Token name           | Description                                                        |
 | -------------------- | ------------------------------------------------------------------ |
 | `drawer`             | The main container of the `Drawer` component.                      |
+| `drawerHeader` | The container of the `DrawerHeader` component. |
 | `openIconContainer`  | The container of icon that opens the Drawer when clicked.          |
 | `closeIconContainer` | The container of icon that closes the Drawer when clicked.         |
 | `closeIconButton`    | The button around of the icon that closes the Drawer when clicked. |
