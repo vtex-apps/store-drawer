@@ -3,10 +3,13 @@ import React, {
   Suspense,
   useReducer,
   MouseEventHandler,
+  createContext,
+  useContext,
+  useMemo,
 } from 'react'
 import { defineMessages } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
-import { IconClose, IconMenu } from 'vtex.store-icons'
+import { IconMenu } from 'vtex.store-icons'
 import { useChildBlock, ExtensionPoint } from 'vtex.render-runtime'
 
 import Overlay from './Overlay'
@@ -110,6 +113,24 @@ const isElementInsideLink = (
   return isElementInsideLink(parentNode, limit)
 }
 
+interface DrawerContext {
+  isOpen: boolean
+  open: () => void
+  close: () => void
+}
+
+const ctx = createContext<DrawerContext | undefined>(undefined)
+
+export const useDrawer = () => {
+  const contextValue = useContext(ctx)
+
+  if (contextValue === undefined) {
+    throw new Error('useDrawer must be used inside <Drawer />')
+  }
+
+  return contextValue
+}
+
 const Drawer: StorefrontComponent<DrawerSchema & {
   customIcon: ReactElement
 }> = ({
@@ -142,8 +163,17 @@ const Drawer: StorefrontComponent<DrawerSchema & {
 
   const swipeHandler = direction === 'left' ? 'onSwipeLeft' : 'onSwipeRight'
 
+  const contextValue = useMemo<DrawerContext>(
+    () => ({
+      isOpen: isMenuOpen,
+      open: openMenu,
+      close: closeMenu,
+    }),
+    [isMenuOpen, openMenu, closeMenu]
+  )
+
   return (
-    <>
+    <ctx.Provider value={contextValue}>
       <div
         className={`pa4 pointer ${handles.openIconContainer}`}
         onClick={openMenu}
@@ -181,14 +211,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
                 overflowY: 'scroll',
               }}
             >
-              <div className={`flex ${handles.closeIconContainer}`}>
-                <button
-                  className={`${handles.closeIconButton} pa4 pointer bg-transparent transparent bn pointer`}
-                  onClick={closeMenu}
-                >
-                  <IconClose size={30} type="line" />
-                </button>
-              </div>
+              <ExtensionPoint id="drawer-close" />
               {/* The onClick handler below is done to fix a bug regarding drawers that wouldn't close when
                * navigating to the same page (e.g. from a search result page to another). It is not an element
                * intended to be clicked directly, so there's probably no need for it to have a role and to
@@ -205,7 +228,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
           </Swipable>
         </Suspense>
       </Portal>
-    </>
+    </ctx.Provider>
   )
 }
 

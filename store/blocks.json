@@ -1,0 +1,8 @@
+{
+  "drawer": {
+    "blocks": ["drawer-close"]
+  },
+  "drawer-close": {
+    "children": ["drawer-close-button"]
+  }
+}

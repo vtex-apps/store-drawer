@@ -2,10 +2,16 @@
   "drawer": {
     "component": "Drawer",
     "composition": "children",
-    "allowed": ["drawer-trigger"]
+    "allowed": ["drawer-trigger", "drawer-close"]
   },
   "drawer-trigger": {
     "component": "DrawerTrigger",
     "composition": "children"
+  },
+  "drawer-close": {
+    "composition": "children"
+  },
+  "drawer-close-button": {
+    "component": "DrawerCloseButton"
   }
 }
