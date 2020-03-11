@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
-- New block `drawer-close` and `drawer-close-button`.
+- New block `drawer-header` and `drawer-close-button`.
 
 ## [0.8.1] - 2020-03-11
 ### Fixed
