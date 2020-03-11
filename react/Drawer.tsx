@@ -3,8 +3,6 @@ import React, {
   Suspense,
   useReducer,
   MouseEventHandler,
-  createContext,
-  useContext,
   useMemo,
 } from 'react'
 import { defineMessages } from 'react-intl'
@@ -16,6 +14,7 @@ import Overlay from './Overlay'
 import Portal from './Portal'
 import useLockScroll from './modules/useLockScroll'
 import DrawerCloseButton from './DrawerCloseButton'
+import { DrawerContextProvider } from './DrawerContext'
 
 const Swipable = React.lazy(() => import('./Swipable'))
 
@@ -114,24 +113,6 @@ const isElementInsideLink = (
   return isElementInsideLink(parentNode, limit)
 }
 
-interface DrawerContext {
-  isOpen: boolean
-  open: () => void
-  close: () => void
-}
-
-const ctx = createContext<DrawerContext | undefined>(undefined)
-
-export const useDrawer = () => {
-  const contextValue = useContext(ctx)
-
-  if (contextValue === undefined) {
-    throw new Error('useDrawer must be used inside <Drawer />')
-  }
-
-  return contextValue
-}
-
 const Drawer: StorefrontComponent<DrawerSchema & {
   customIcon: ReactElement
 }> = ({
@@ -165,7 +146,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
 
   const swipeHandler = direction === 'left' ? 'onSwipeLeft' : 'onSwipeRight'
 
-  const contextValue = useMemo<DrawerContext>(
+  const contextValue = useMemo(
     () => ({
       isOpen: isMenuOpen,
       open: openMenu,
@@ -175,7 +156,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
   )
 
   return (
-    <ctx.Provider value={contextValue}>
+    <DrawerContextProvider value={contextValue}>
       <div
         className={`pa4 pointer ${handles.openIconContainer}`}
         onClick={openMenu}
@@ -234,7 +215,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
           </Swipable>
         </Suspense>
       </Portal>
-    </ctx.Provider>
+    </DrawerContextProvider>
   )
 }
 

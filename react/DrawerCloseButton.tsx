@@ -2,7 +2,7 @@ import React from 'react'
 import { useCssHandles } from 'vtex.css-handles'
 import { IconClose } from 'vtex.store-icons'
 
-import { useDrawer } from './Drawer'
+import { useDrawer } from './DrawerContext'
 
 const CSS_HANDLES = ['closeIconButton', 'closeIconContainer'] as const
 
