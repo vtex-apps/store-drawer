@@ -15,7 +15,6 @@ import Portal from './Portal'
 import useLockScroll from './modules/useLockScroll'
 import DrawerCloseButton from './DrawerCloseButton'
 import { DrawerContextProvider } from './DrawerContext'
-import DrawerHeader from './DrawerHeader'
 
 const Swipable = React.lazy(() => import('./Swipable'))
 
@@ -70,7 +69,12 @@ const useMenuState = () => {
   }
 }
 
-const CSS_HANDLES = ['openIconContainer', 'drawer', 'childrenContainer']
+const CSS_HANDLES = [
+  'openIconContainer',
+  'drawer',
+  'childrenContainer',
+  'closeIconContainer',
+]
 
 // This is a totally valid use case for any, eslint.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -195,9 +199,9 @@ const Drawer: StorefrontComponent<DrawerSchema & {
                 <ExtensionPoint id="drawer-header" />
               ) : (
                 header ?? (
-                  <DrawerHeader>
+                  <div className={`flex ${handles.closeIconContainer}`}>
                     <DrawerCloseButton />
-                  </DrawerHeader>
+                  </div>
                 )
               )}
               {/* The onClick handler below is done to fix a bug regarding drawers that wouldn't close when
