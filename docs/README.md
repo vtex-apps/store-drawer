@@ -118,6 +118,13 @@ The Drawer component accepts a few props that allow you to customize it.
 | `isFullWidth`    | `Boolean`            | Control whether or not the open Drawer should occupy the full available width.       | `false`        |
 | `slideDirection` | `'horizontal'`&#124;`'vertical'`&#124;`'rightToLeft'`&#124;`'leftToRight'`             | Controls the opening animation's direction. | `'horizontal'` |
 
+The `DrawerCloseButton` accepts the following props to customize it:
+
+| Prop name | Type | Description | Default value |
+| --- | --- | --- | --- |
+| `size` | `Number` | Define the size of the icon inside the button | `30` |
+| `type` | `'filled'`&#124;`'line'` | Define the type of the icon | `'line'` |
+
 ### Styles API
 
 This app provides some CSS classes as an API for style customization.
