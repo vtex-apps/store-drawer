@@ -6,7 +6,12 @@ import { useDrawer } from './DrawerContext'
 
 const CSS_HANDLES = ['closeIconButton'] as const
 
-const DrawerCloseButton: React.FC = () => {
+interface Props {
+  size?: number
+  type?: 'filled' | 'line'
+}
+
+const DrawerCloseButton: React.FC<Props> = ({ size = 30, type = 'line' }) => {
   const { close } = useDrawer()
 
   const handles = useCssHandles(CSS_HANDLES)
@@ -16,7 +21,7 @@ const DrawerCloseButton: React.FC = () => {
       className={`${handles.closeIconButton} pa4 pointer bg-transparent transparent bn pointer`}
       onClick={close}
     >
-      <IconClose size={30} type="line" />
+      <IconClose size={size} type={type} />
     </button>
   )
 }
