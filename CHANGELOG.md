@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- New block `drawer-header` and `drawer-close-button`.
+
+### Fixed
+- Drawer trigger block never being rendered.
 
 ## [0.8.1] - 2020-03-11
 ### Fixed

@@ -63,13 +63,39 @@ There is also a block that can be used for customizing the icon that triggers th
 },
 ```
 
+And there is a block that enables customization of the header that contains the button which closes the drawer.
+It's called `"drawer-header"` and can be used in a similar way as `"drawer-trigger"`, here is an example:
+
+```jsonc
+// inside blocks.json
+{
+  "drawer": {
+    "blocks": ["drawer-header#my-drawer"]
+  },
+  "drawer-header#my-drawer": {
+    "children": [
+      // you need to include the block `drawer-close-button` somewhere inside here
+      "flex-layout.row#something",
+      // ...
+      "drawer-close-button"
+    ]
+  }
+}
+```
+
 If you're using this component by itself, you just need to import it inside the component you want to use it in. Here's an example:
 
 ```tsx
-import { Drawer } from 'vtex.store-drawer'
+import { Drawer, DrawerHeader, DrawerCloseButton } from 'vtex.store-drawer'
 
 const Menu = () => (
-  <Drawer>
+  <Drawer
+    header={
+      <DrawerHeader>
+        <DrawerCloseButton />
+      </DrawerHeader>
+    }
+  >
     <ul>
       <li>Link 1</li>
       <li>Link 2</li>
@@ -91,6 +117,13 @@ The Drawer component accepts a few props that allow you to customize it.
 | `maxWidth`       | `Number` or `String` | Define the open Drawer's maximum width.                                              | `450`          |
 | `isFullWidth`    | `Boolean`            | Control whether or not the open Drawer should occupy the full available width.       | `false`        |
 | `slideDirection` | `'horizontal'`&#124;`'vertical'`&#124;`'rightToLeft'`&#124;`'leftToRight'`             | Controls the opening animation's direction. | `'horizontal'` |
+
+The `DrawerCloseButton` accepts the following props to customize it:
+
+| Prop name | Type | Description | Default value |
+| --- | --- | --- | --- |
+| `size` | `Number` | Define the size of the icon inside the button | `30` |
+| `type` | `'filled'`&#124;`'line'` | Define the type of the icon | `'line'` |
 
 ### Styles API
 
@@ -115,6 +148,7 @@ Below, we describe the namespaces that are defined in the `store-drawer`.
 | Token name           | Description                                                        |
 | -------------------- | ------------------------------------------------------------------ |
 | `drawer`             | The main container of the `Drawer` component.                      |
+| `drawerHeader` | The container of the `DrawerHeader` component. |
 | `openIconContainer`  | The container of icon that opens the Drawer when clicked.          |
 | `closeIconContainer` | The container of icon that closes the Drawer when clicked.         |
 | `closeIconButton`    | The button around of the icon that closes the Drawer when clicked. |
