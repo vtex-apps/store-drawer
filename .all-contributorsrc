@@ -9,6 +9,17 @@
   "imageSize": 100,
   "commit": true,
   "commitConvention": "none",
-  "contributors": [],
-  "contributorsPerLine": 7
+  "contributors": [
+    {
+      "login": "Radu1749",
+      "name": "Radu1749",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/51535501?v=4",
+      "profile": "https://github.com/Radu1749",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true
 }
