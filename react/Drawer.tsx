@@ -74,6 +74,7 @@ const CSS_HANDLES = [
   'drawer',
   'childrenContainer',
   'closeIconContainer',
+  'drawerContainer'
 ]
 
 // This is a totally valid use case for any, eslint.
@@ -189,7 +190,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
               pointerEvents: isMenuOpen ? 'auto' : 'none',
             }}
           >
-            <div
+            <div className={handles.drawerContainer}
               style={{
                 WebkitOverflowScrolling: 'touch',
                 overflowY: 'scroll',
