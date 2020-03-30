@@ -72,6 +72,7 @@ const useMenuState = () => {
 const CSS_HANDLES = [
   'openIconContainer',
   'drawer',
+  'drawerContent',
   'childrenContainer',
   'closeIconContainer',
 ]
@@ -189,7 +190,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
               pointerEvents: isMenuOpen ? 'auto' : 'none',
             }}
           >
-            <div
+            <div className={handles.drawerContent}
               style={{
                 WebkitOverflowScrolling: 'touch',
                 overflowY: 'scroll',

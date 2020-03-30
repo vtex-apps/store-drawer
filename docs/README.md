@@ -1,13 +1,19 @@
+📢 Use this project, [contribute](https://github.com/vtex-apps/drawer) to it or open issues to help evolve it using [Store Discussion](https://github.com/vtex-apps/store-discussion).
+
 # Store Drawer
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This component allows you to have a sliding drawer for your menus. This is specially handy for mobile layouts.
 
-## Basic Usage
+## Configuration
 
-To configure or customize this app, you need to import it in your dependencies in your `manifest.json` file.
+Add the app to your theme's dependencies on the `manifest.json`, for example:
 
 ```json
-dependencies: {
+"dependencies": {
   "vtex.store-drawer": "0.x"
 }
 ```
@@ -125,31 +131,29 @@ The `DrawerCloseButton` accepts the following props to customize it:
 | `size` | `Number` | Define the size of the icon inside the button | `30` |
 | `type` | `'filled'`&#124;`'line'` | Define the type of the icon | `'line'` |
 
-### Styles API
+## Customization
 
-This app provides some CSS classes as an API for style customization.
+In order to apply CSS customizations in this and other blocks, follow the instructions given in the recipe on [Using CSS Handles for store customization](https://vtex.io/docs/recipes/style/using-css-handles-for-store-customization).
 
-To use this CSS API, you must add the `styles` builder and create an app styling CSS file.
+| CSS Handles          |
+| -------------------- |
+| `drawer`             |
+| `drawerContent`      |
+| `drawerHeader`       |
+| `openIconContainer`  |
+| `closeIconContainer` |
+| `closeIconButton`    |
+| `childrenContainer`  |
 
-- Add the `styles` builder to your `manifest.json`:
+## Contributors ✨
 
-```json
-"builders": {
-  "styles": "1.x"
-}
-```
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
-- Create a file called `vtex.store-drawer.css` inside the `styles/css` folder and add your custom using regular CSS.
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
-#### CSS Namespaces
-
-Below, we describe the namespaces that are defined in the `store-drawer`.
-
-| Token name           | Description                                                        |
-| -------------------- | ------------------------------------------------------------------ |
-| `drawer`             | The main container of the `Drawer` component.                      |
-| `drawerHeader` | The container of the `DrawerHeader` component. |
-| `openIconContainer`  | The container of icon that opens the Drawer when clicked.          |
-| `closeIconContainer` | The container of icon that closes the Drawer when clicked.         |
-| `closeIconButton`    | The button around of the icon that closes the Drawer when clicked. |
-| `childrenContainer`  | The container of children blocks passed to Drawer.                 |
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
