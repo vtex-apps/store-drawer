@@ -72,9 +72,9 @@ const useMenuState = () => {
 const CSS_HANDLES = [
   'openIconContainer',
   'drawer',
+  'drawerContent',
   'childrenContainer',
   'closeIconContainer',
-  'drawerContainer'
 ]
 
 // This is a totally valid use case for any, eslint.
@@ -190,7 +190,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
               pointerEvents: isMenuOpen ? 'auto' : 'none',
             }}
           >
-            <div className={handles.drawerContainer}
+            <div className={handles.drawerContent}
               style={{
                 WebkitOverflowScrolling: 'touch',
                 overflowY: 'scroll',
