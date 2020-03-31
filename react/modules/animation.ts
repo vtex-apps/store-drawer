@@ -1,15 +1,27 @@
-import parseMeasure from './parseMeasure'
+import parseMeasure, { Measure } from './parseMeasure'
 
-const animations = []
+interface Animation {
+  prop: string
+  object: { [prop: string]: Measure }
+  isStopped: () => boolean
+  stop: () => void
+}
 
-const createAnimation = ({ object, prop, stop, isStopped }) => ({
+const animations: Animation[] = []
+
+const createAnimation = ({
+  object,
+  prop,
+  stop,
+  isStopped,
+}: Animation): Animation => ({
   object,
   prop,
   stop,
   isStopped,
 })
 
-const stopConflictingAnimations = animation =>
+const stopConflictingAnimations = (animation: Animation) =>
   animations.filter(cur => {
     const isConflicting =
       cur.object === animation.object && cur.prop === animation.prop
@@ -19,7 +31,19 @@ const stopConflictingAnimations = animation =>
     return !cur.isStopped()
   })
 
-function animate({
+interface AnimationOptions {
+  object: { [prop: string]: Measure }
+  prop: string
+  target: Measure
+  duration?: number
+  speed?: number
+  acceleration?: number
+  maxSpeed?: number
+  onUpdate?: (value: string) => void
+  onComplete?: () => void
+}
+
+export function animate({
   object,
   prop,
   target,
@@ -27,18 +51,18 @@ function animate({
   speed,
   acceleration,
   maxSpeed,
-  onUpdate = null,
-  onComplete = null,
-}) {
+  onUpdate = undefined,
+  onComplete = undefined,
+}: AnimationOptions) {
   const targetFps = 60
   const frameDuration = 1000 / targetFps
 
-  const [targetValue, targetUnit, isTargetUnitless] = parseMeasure(target)
-  const [originValue, originUnit] = parseMeasure(object[prop])
+  const [targetValue, targetUnit, isTargetUnitless] = parseMeasure(target)!
+  const [originValue, originUnit] = parseMeasure(object[prop])!
   const unit = isTargetUnitless ? originUnit : targetUnit
   const delta = targetValue - originValue
 
-  const ease = v => v * (2 - v)
+  const ease = (v: number) => v * (2 - v)
   const maxTimeMultiplier = 2
 
   let stopped = false
@@ -51,16 +75,17 @@ function animate({
   }
 
   let current = duration ? 0 : originValue
-  let last = null
+  let last: number | null | undefined = null
 
-  const update = now => {
+  const update = (now?: number) => {
     if (stopped) return
     let timeMultiplier = 1
     if (last != null) {
-      const deltaTime = now - last
+      const deltaTime = now! - last
       timeMultiplier = deltaTime / frameDuration
       if (timeMultiplier > maxTimeMultiplier) timeMultiplier = maxTimeMultiplier
     }
+
     last = now
 
     if (duration) {
@@ -112,6 +137,7 @@ function animate({
 
     requestAnimationFrame(update)
   }
+
   update()
 
   const animation = createAnimation({ object, prop, stop, isStopped })
@@ -121,5 +147,3 @@ function animate({
 
   return stop
 }
-
-export { animate }

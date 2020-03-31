@@ -3,15 +3,18 @@ import React, {
   Suspense,
   useReducer,
   MouseEventHandler,
+  useMemo,
 } from 'react'
 import { defineMessages } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
-import { IconClose, IconMenu } from 'vtex.store-icons'
+import { IconMenu } from 'vtex.store-icons'
 import { useChildBlock, ExtensionPoint } from 'vtex.render-runtime'
 
 import Overlay from './Overlay'
 import Portal from './Portal'
 import useLockScroll from './modules/useLockScroll'
+import DrawerCloseButton from './DrawerCloseButton'
+import { DrawerContextProvider } from './DrawerContext'
 
 const Swipable = React.lazy(() => import('./Swipable'))
 
@@ -69,9 +72,9 @@ const useMenuState = () => {
 const CSS_HANDLES = [
   'openIconContainer',
   'drawer',
-  'closeIconContainer',
+  'drawerContent',
   'childrenContainer',
-  'closeIconButton',
+  'closeIconContainer',
 ]
 
 // This is a totally valid use case for any, eslint.
@@ -111,17 +114,20 @@ const isElementInsideLink = (
 }
 
 const Drawer: StorefrontComponent<DrawerSchema & {
-  customIcon: ReactElement
+  customIcon?: ReactElement
+  header?: ReactElement
 }> = ({
   width,
   customIcon,
   maxWidth = 450,
   isFullWidth,
   slideDirection = 'horizontal',
+  header,
   children,
 }) => {
   const handles = useCssHandles(CSS_HANDLES)
   const hasTriggerBlock = Boolean(useChildBlock({ id: 'drawer-trigger' }))
+  const hasHeaderBlock = Boolean(useChildBlock({ id: 'drawer-header' }))
   const { state: menuState, openMenu, closeMenu } = useMenuState()
   const { isOpen: isMenuOpen, hasBeenOpened: hasMenuBeenOpened } = menuState
 
@@ -142,17 +148,26 @@ const Drawer: StorefrontComponent<DrawerSchema & {
 
   const swipeHandler = direction === 'left' ? 'onSwipeLeft' : 'onSwipeRight'
 
+  const contextValue = useMemo(
+    () => ({
+      isOpen: isMenuOpen,
+      open: openMenu,
+      close: closeMenu,
+    }),
+    [isMenuOpen, openMenu, closeMenu]
+  )
+
   return (
-    <>
+    <DrawerContextProvider value={contextValue}>
       <div
         className={`pa4 pointer ${handles.openIconContainer}`}
         onClick={openMenu}
         aria-hidden
       >
         {hasTriggerBlock ? (
-          <ExtensionPoint id="drawer-open-trigger" />
+          <ExtensionPoint id="drawer-trigger" />
         ) : (
-          customIcon || <IconMenu size={20} />
+          customIcon ?? <IconMenu size={20} />
         )}
       </div>
       <Portal>
@@ -175,20 +190,21 @@ const Drawer: StorefrontComponent<DrawerSchema & {
               pointerEvents: isMenuOpen ? 'auto' : 'none',
             }}
           >
-            <div
+            <div className={handles.drawerContent}
               style={{
                 WebkitOverflowScrolling: 'touch',
                 overflowY: 'scroll',
               }}
             >
-              <div className={`flex ${handles.closeIconContainer}`}>
-                <button
-                  className={`${handles.closeIconButton} pa4 pointer bg-transparent transparent bn pointer`}
-                  onClick={closeMenu}
-                >
-                  <IconClose size={30} type="line" />
-                </button>
-              </div>
+              {hasHeaderBlock ? (
+                <ExtensionPoint id="drawer-header" />
+              ) : (
+                header ?? (
+                  <div className={`flex ${handles.closeIconContainer}`}>
+                    <DrawerCloseButton />
+                  </div>
+                )
+              )}
               {/* The onClick handler below is done to fix a bug regarding drawers that wouldn't close when
                * navigating to the same page (e.g. from a search result page to another). It is not an element
                * intended to be clicked directly, so there's probably no need for it to have a role and to
@@ -205,7 +221,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
           </Swipable>
         </Suspense>
       </Portal>
-    </>
+    </DrawerContextProvider>
   )
 }
 

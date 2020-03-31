@@ -1,16 +1,22 @@
+📢 Use this project, [contribute](https://github.com/vtex-apps/drawer) to it or open issues to help evolve it using [Store Discussion](https://github.com/vtex-apps/store-discussion).
+
 # Store Drawer
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+
 This component allows you to have a sliding drawer for your menus. This is specially handy for mobile layouts.
 
-## Basic Usage
+## Configuration
 
-To configure or customize this app, you need to import it in your dependencies in your `manifest.json` file.
+Add the app to your theme's dependencies on the `manifest.json`, for example:
 
 ```json
-dependencies: {
+"dependencies": {
   "vtex.store-drawer": "0.x"
 }
 ```
@@ -66,13 +72,39 @@ There is also a block that can be used for customizing the icon that triggers th
 },
 ```
 
+And there is a block that enables customization of the header that contains the button which closes the drawer.
+It's called `"drawer-header"` and can be used in a similar way as `"drawer-trigger"`, here is an example:
+
+```jsonc
+// inside blocks.json
+{
+  "drawer": {
+    "blocks": ["drawer-header#my-drawer"]
+  },
+  "drawer-header#my-drawer": {
+    "children": [
+      // you need to include the block `drawer-close-button` somewhere inside here
+      "flex-layout.row#something",
+      // ...
+      "drawer-close-button"
+    ]
+  }
+}
+```
+
 If you're using this component by itself, you just need to import it inside the component you want to use it in. Here's an example:
 
 ```tsx
-import { Drawer } from 'vtex.store-drawer'
+import { Drawer, DrawerHeader, DrawerCloseButton } from 'vtex.store-drawer'
 
 const Menu = () => (
-  <Drawer>
+  <Drawer
+    header={
+      <DrawerHeader>
+        <DrawerCloseButton />
+      </DrawerHeader>
+    }
+  >
     <ul>
       <li>Link 1</li>
       <li>Link 2</li>
@@ -95,25 +127,43 @@ The Drawer component accepts a few props that allow you to customize it.
 | `isFullWidth`    | `Boolean`            | Control whether or not the open Drawer should occupy the full available width.       | `false`        |
 | `slideDirection` | `'horizontal'`&#124;`'vertical'`&#124;`'rightToLeft'`&#124;`'leftToRight'`             | Controls the opening animation's direction. | `'horizontal'` |
 
-### Styles API
+The `DrawerCloseButton` accepts the following props to customize it:
 
-This app provides some CSS classes as an API for style customization.
+| Prop name | Type | Description | Default value |
+| --- | --- | --- | --- |
+| `size` | `Number` | Define the size of the icon inside the button | `30` |
+| `type` | `'filled'`&#124;`'line'` | Define the type of the icon | `'line'` |
 
-To use this CSS API, you must add the `styles` builder and create an app styling CSS file.
+## Customization
 
-- Add the `styles` builder to your `manifest.json`:
+In order to apply CSS customizations in this and other blocks, follow the instructions given in the recipe on [Using CSS Handles for store customization](https://vtex.io/docs/recipes/style/using-css-handles-for-store-customization).
 
-```json
-"builders": {
-  "styles": "1.x"
-}
-```
+| CSS Handles          |
+| -------------------- |
+| `drawer`             |
+| `drawerContent`      |
+| `drawerHeader`       |
+| `openIconContainer`  |
+| `closeIconContainer` |
+| `closeIconButton`    |
+| `childrenContainer`  |
 
-- Create a file called `vtex.store-drawer.css` inside the `styles/css` folder and add your custom using regular CSS.
+## Contributors ✨
 
-#### CSS Namespaces
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
-Below, we describe the namespaces that are defined in the `store-drawer`.
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/Radu1749"><img src="https://avatars2.githubusercontent.com/u/51535501?v=4" width="100px;" alt=""/><br /><sub><b>Radu1749</b></sub></a><br /><a href="https://github.com/vtex-apps/drawer/commits?author=Radu1749" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 | Token name           | Description                                                        |
 | -------------------- | ------------------------------------------------------------------ |

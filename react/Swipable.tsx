@@ -26,7 +26,7 @@ interface Props {
   onDragEnd: () => void
   onSetPosition: (args: {
     element: ReactElement | HTMLDivElement
-    offset: number
+    offset: number | string
   }) => void
   onUpdateOffset: (offset: number | string) => void
   threshold: number
@@ -192,7 +192,7 @@ export default class Swipable extends React.Component<Props> {
       ...(this.momentum
         ? { speed: this.momentum, acceleration: 1.25 }
         : { duration: 0.25 }),
-      onUpdate: (value: number) => {
+      onUpdate: (value: string) => {
         this.setOffset(value)
       },
     })
@@ -329,7 +329,7 @@ export default class Swipable extends React.Component<Props> {
     }
   }
 
-  private setOffset = (offset: number) => {
+  private setOffset = (offset: number | string) => {
     if (this.dragContainer && this.dragContainer.current) {
       this.props.onSetPosition({
         element: this.props.element || this.dragContainer.current,
@@ -441,7 +441,7 @@ export default class Swipable extends React.Component<Props> {
           prop: 'value',
           target: 0,
           duration: 0.2,
-          onUpdate: (value: number) => {
+          onUpdate: (value: string) => {
             this.setOffset(value)
           },
         })
