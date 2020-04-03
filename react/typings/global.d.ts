@@ -22,6 +22,7 @@ declare global {
     height: '100%' | 'auto' | 'fullscreen'
     slideDirection: 'vertical' | 'horizontal' | 'rightToLeft' | 'leftToRight'
     isFullWidth: boolean
+    initialOpen: true
     maxWidth: number | string
   }
 }

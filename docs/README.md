@@ -122,6 +122,7 @@ The Drawer component accepts a few props that allow you to customize it.
 | ---------------- | -------------------- | ------------------------------------------------------------------------------------ | -------------- |
 | `maxWidth`       | `Number` or `String` | Define the open Drawer's maximum width.                                              | `450`          |
 | `isFullWidth`    | `Boolean`            | Control whether or not the open Drawer should occupy the full available width.       | `false`        |
+| `initialOpen`    | `Boolean`            | Drawer starts open.                                                                  | `false`        |
 | `slideDirection` | `'horizontal'`&#124;`'vertical'`&#124;`'rightToLeft'`&#124;`'leftToRight'`             | Controls the opening animation's direction. | `'horizontal'` |
 
 The `DrawerCloseButton` accepts the following props to customize it:
