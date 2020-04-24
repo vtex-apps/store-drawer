@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
-- Added class names with CSS Handles
+- Class names with CSS Handles
 
 ## [0.10.1] - 2020-04-01
 ### Changed
