@@ -4,6 +4,7 @@ import React, {
   useReducer,
   MouseEventHandler,
   useMemo,
+  useState,
 } from 'react'
 import { defineMessages } from 'react-intl'
 import { useCssHandles } from 'vtex.css-handles'
@@ -72,6 +73,9 @@ const useMenuState = () => {
 const CSS_HANDLES = [
   'openIconContainer',
   'drawer',
+  'opened',
+  'closed',
+  'moving',
   'drawerContent',
   'childrenContainer',
   'closeIconContainer',
@@ -130,6 +134,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
   const hasHeaderBlock = Boolean(useChildBlock({ id: 'drawer-header' }))
   const { state: menuState, openMenu, closeMenu } = useMenuState()
   const { isOpen: isMenuOpen, hasBeenOpened: hasMenuBeenOpened } = menuState
+  const [isMoving, setIsMoving] = useState(false)
 
   const handleContainerClick: MouseEventHandler<HTMLElement> = event => {
     // target is the clicked element
@@ -180,7 +185,12 @@ const Drawer: StorefrontComponent<DrawerSchema & {
             enabled={isMenuOpen}
             position={isMenuOpen ? 'center' : direction}
             allowOutsideDrag
+            onUpdateOffset={value => {
+              setIsMoving(!(value === '0%' || value === '-100%'))
+            }}
             className={`${handles.drawer} ${
+              isMenuOpen ? handles.opened : handles.closed
+            } ${isMoving ? handles.moving : ''} ${
               direction === 'right' ? 'right-0' : 'left-0'
             } fixed top-0 bottom-0 bg-base z-999 flex flex-column`}
             style={{
@@ -190,7 +200,8 @@ const Drawer: StorefrontComponent<DrawerSchema & {
               pointerEvents: isMenuOpen ? 'auto' : 'none',
             }}
           >
-            <div className={handles.drawerContent}
+            <div
+              className={handles.drawerContent}
               style={{
                 WebkitOverflowScrolling: 'touch',
                 overflowY: 'scroll',
