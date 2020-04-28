@@ -6,11 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- `backdropMode` prop to `drawer`.
+
+### Security
+- Bump dependencies versions.
 
 ## [0.11.0] - 2020-04-28
-
 ### Added
-- Class names with CSS Handles
+- Class names with CSS Handles.
 
 ## [0.10.1] - 2020-04-01
 ### Changed

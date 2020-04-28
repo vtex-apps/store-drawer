@@ -3,7 +3,9 @@
 # Store Drawer
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This component allows you to have a sliding drawer for your menus. This is specially handy for mobile layouts.
@@ -120,9 +122,10 @@ The Drawer component accepts a few props that allow you to customize it.
 
 | Prop name        | Type                                                                       | Description                                                                    | Default value  |
 | ---------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | -------------- |
-| `maxWidth`       | `Number` or `String`                                                       | Define the open Drawer's maximum width.                                        | `450`          |
+| `maxWidth`       | `number` or `string`                                                       | Define the open Drawer's maximum width.                                        | `450`          |
 | `isFullWidth`    | `Boolean`                                                                  | Control whether or not the open Drawer should occupy the full available width. | `false`        |
 | `slideDirection` | `'horizontal'`&#124;`'vertical'`&#124;`'rightToLeft'`&#124;`'leftToRight'` | Controls the opening animation's direction.                                    | `'horizontal'` |
+| `backdropMode` | `'default'`&#124;`'none'` | Controls if it should display the backdrop when the Drawer is open |
 
 The `DrawerCloseButton` accepts the following props to customize it:
 
@@ -164,6 +167,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):

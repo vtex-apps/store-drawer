@@ -9,10 +9,12 @@ const Overlay: RefForwardingComponent<HTMLDivElement, Props> = (
   { visible, onClick }: Props,
   ref
 ) => {
+  const ariaHidden = visible ? 'false' : 'true'
   return (
     <div
       ref={ref}
-      aria-hidden
+      aria-hidden={ariaHidden}
+      role="presentation"
       onClick={onClick}
       style={{
         opacity: visible ? 0.5 : 0,
