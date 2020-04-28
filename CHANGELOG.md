@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - `backdropMode` prop to `drawer`.
 
+### Security
+- Bump dependencies versions.
+
 ## [0.11.0] - 2020-04-28
 ### Added
 - Class names with CSS Handles.
