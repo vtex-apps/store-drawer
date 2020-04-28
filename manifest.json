@@ -1,7 +1,7 @@
 {
   "name": "store-drawer",
   "vendor": "vtex",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "title": "Store Drawer",
   "description": "The VTEX Drawer",
   "builders": {
@@ -16,6 +16,8 @@
     "vtex.responsive-values": "0.x"
   },
   "mustUpdateAt": "2020-03-28",
-  "registries": ["smartcheckout"],
+  "registries": [
+    "smartcheckout"
+  ],
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
