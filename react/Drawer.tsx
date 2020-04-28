@@ -1,5 +1,4 @@
 import React, {
-  ReactElement,
   Suspense,
   useReducer,
   MouseEventHandler,
@@ -31,6 +30,25 @@ interface MenuAction {
 const initialMenuState: MenuState = {
   isOpen: false,
   hasBeenOpened: false,
+}
+
+type Position = 'left' | 'right' | 'up' | 'down'
+type SlideDirection = 'vertical' | 'horizontal' | 'rightToLeft' | 'leftToRight'
+type Height = '100%' | 'auto' | 'fullscreen'
+type Width = '100%' | 'auto'
+
+interface Props {
+  actionIconId: string
+  dismissIconId: string
+  position: Position
+  width?: Width
+  height: Height
+  slideDirection?: SlideDirection
+  isFullWidth: boolean
+  maxWidth?: number | string
+  children: React.ReactNode
+  customIcon: React.ReactElement
+  header: React.ReactElement
 }
 
 function menuReducer(state: MenuState, action: MenuAction) {
@@ -117,18 +135,16 @@ const isElementInsideLink = (
   return isElementInsideLink(parentNode, limit)
 }
 
-const Drawer: StorefrontComponent<DrawerSchema & {
-  customIcon?: ReactElement
-  header?: ReactElement
-}> = ({
-  width,
-  customIcon,
-  maxWidth = 450,
-  isFullWidth,
-  slideDirection = 'horizontal',
-  header,
-  children,
-}) => {
+function Drawer(props: Props) {
+  const {
+    width,
+    header,
+    children,
+    customIcon,
+    isFullWidth,
+    maxWidth = 450,
+    slideDirection = 'horizontal',
+  } = props
   const handles = useCssHandles(CSS_HANDLES)
   const hasTriggerBlock = Boolean(useChildBlock({ id: 'drawer-trigger' }))
   const hasHeaderBlock = Boolean(useChildBlock({ id: 'drawer-header' }))
@@ -194,7 +210,7 @@ const Drawer: StorefrontComponent<DrawerSchema & {
               direction === 'right' ? 'right-0' : 'left-0'
             } fixed top-0 bottom-0 bg-base z-999 flex flex-column`}
             style={{
-              width: width || (isFullWidth ? '100%' : '85%'),
+              width: width ?? (isFullWidth ? '100%' : '85%'),
               maxWidth,
               minWidth: 280,
               pointerEvents: isMenuOpen ? 'auto' : 'none',
