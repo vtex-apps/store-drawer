@@ -6,15 +6,20 @@ import React, {
   useState,
 } from 'react'
 import { defineMessages } from 'react-intl'
-import { useCssHandles } from 'vtex.css-handles'
 import { IconMenu } from 'vtex.store-icons'
+import { useCssHandles } from 'vtex.css-handles'
 import { useChildBlock, ExtensionPoint } from 'vtex.render-runtime'
+import {
+  MaybeResponsiveValue,
+  useResponsiveValue,
+} from 'vtex.responsive-values'
 
-import Overlay from './Overlay'
 import Portal from './Portal'
+import Overlay from './Overlay'
 import useLockScroll from './modules/useLockScroll'
 import DrawerCloseButton from './DrawerCloseButton'
 import { DrawerContextProvider } from './DrawerContext'
+import { isElementInsideLink } from './modules/isElementInsideLink'
 
 const Swipable = React.lazy(() => import('./Swipable'))
 
@@ -36,6 +41,7 @@ type Position = 'left' | 'right' | 'up' | 'down'
 type SlideDirection = 'vertical' | 'horizontal' | 'rightToLeft' | 'leftToRight'
 type Height = '100%' | 'auto' | 'fullscreen'
 type Width = '100%' | 'auto'
+type BackdropMode = 'visible' | 'none'
 
 interface Props {
   actionIconId: string
@@ -49,6 +55,7 @@ interface Props {
   children: React.ReactNode
   customIcon: React.ReactElement
   header: React.ReactElement
+  backdropMode?: MaybeResponsiveValue<BackdropMode>
 }
 
 function menuReducer(state: MenuState, action: MenuAction) {
@@ -97,43 +104,7 @@ const CSS_HANDLES = [
   'drawerContent',
   'childrenContainer',
   'closeIconContainer',
-]
-
-// This is a totally valid use case for any, eslint.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isHTMLElement(x: any): x is HTMLElement {
-  return 'tagName' in x
-}
-
-function isLink(element: HTMLElement): element is HTMLAnchorElement {
-  return String(element.tagName).toUpperCase() === 'A'
-}
-
-const isElementInsideLink = (
-  node: HTMLElement | null,
-  limit?: HTMLElement
-): boolean => {
-  if (!node || !isHTMLElement(node)) {
-    return false
-  }
-
-  if (isLink(node)) {
-    return true
-  }
-
-  const { parentNode } = node
-
-  if (
-    !parentNode ||
-    !isHTMLElement(parentNode) ||
-    parentNode.tagName.toUpperCase() === 'BODY' ||
-    (limit && parentNode === limit)
-  ) {
-    return false
-  }
-
-  return isElementInsideLink(parentNode, limit)
-}
+] as const
 
 function Drawer(props: Props) {
   const {
@@ -144,8 +115,10 @@ function Drawer(props: Props) {
     isFullWidth,
     maxWidth = 450,
     slideDirection = 'horizontal',
+    backdropMode: backdropModeProp = 'visible',
   } = props
   const handles = useCssHandles(CSS_HANDLES)
+  const backdropMode = useResponsiveValue(backdropModeProp)
   const hasTriggerBlock = Boolean(useChildBlock({ id: 'drawer-trigger' }))
   const hasHeaderBlock = Boolean(useChildBlock({ id: 'drawer-header' }))
   const { state: menuState, openMenu, closeMenu } = useMenuState()
@@ -178,12 +151,15 @@ function Drawer(props: Props) {
     [isMenuOpen, openMenu, closeMenu]
   )
 
+  const overlayVisible = backdropMode === 'visible' && isMenuOpen
+
   return (
     <DrawerContextProvider value={contextValue}>
       <div
-        className={`pa4 pointer ${handles.openIconContainer}`}
         onClick={openMenu}
-        aria-hidden
+        role="presentation"
+        aria-hidden={isMenuOpen ? 'false' : 'true'}
+        className={`pa4 pointer ${handles.openIconContainer}`}
       >
         {hasTriggerBlock ? (
           <ExtensionPoint id="drawer-trigger" />
@@ -192,7 +168,7 @@ function Drawer(props: Props) {
         )}
       </div>
       <Portal>
-        <Overlay visible={isMenuOpen} onClick={closeMenu} />
+        <Overlay visible={overlayVisible} onClick={closeMenu} />
         <Suspense fallback={<React.Fragment />}>
           <Swipable
             {...{
