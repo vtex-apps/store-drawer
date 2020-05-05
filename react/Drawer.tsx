@@ -193,10 +193,9 @@ function Drawer(props: Props) {
             }}
           >
             <div
-              className={handles.drawerContent}
+              className={`${handles.drawerContent} overflow-y-auto`}
               style={{
                 WebkitOverflowScrolling: 'touch',
-                overflowY: 'scroll',
               }}
             >
               {hasHeaderBlock ? (
