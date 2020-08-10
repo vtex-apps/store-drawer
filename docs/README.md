@@ -142,6 +142,8 @@ In order to apply CSS customizations in this and other blocks, follow the instru
 | -------------------- |
 | `drawer`             |
 | `opened`             |
+| `overlay`            |
+| `overlay--visible`   |
 | `closed`             |
 | `moving`             |
 | `drawerContent`      |
