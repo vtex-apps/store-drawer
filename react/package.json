@@ -19,5 +19,5 @@
     "vtex.render-runtime": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.95.1/public/@types/vtex.render-runtime",
     "vtex.store-icons": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-icons@0.17.0/public/@types/vtex.store-icons"
   },
-  "version": "0.12.1"
+  "version": "0.13.0"
 }
