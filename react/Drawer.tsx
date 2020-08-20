@@ -44,17 +44,17 @@ type Width = '100%' | 'auto'
 type BackdropMode = 'visible' | 'none'
 
 interface Props {
-  actionIconId: string
-  dismissIconId: string
-  position: Position
+  actionIconId?: string
+  dismissIconId?: string
+  position?: Position
   width?: Width
-  height: Height
+  height?: Height
   slideDirection?: SlideDirection
-  isFullWidth: boolean
+  isFullWidth?: boolean
   maxWidth?: number | string
   children: React.ReactNode
-  customIcon: React.ReactElement
-  header: React.ReactElement
+  customIcon?: React.ReactElement
+  header?: React.ReactElement
   backdropMode?: MaybeResponsiveValue<BackdropMode>
 }
 
