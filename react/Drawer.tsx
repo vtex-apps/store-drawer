@@ -9,6 +9,7 @@ import { defineMessages } from 'react-intl'
 import { IconMenu } from 'vtex.store-icons'
 import { useCssHandles } from 'vtex.css-handles'
 import { useChildBlock, ExtensionPoint } from 'vtex.render-runtime'
+import { useCustomEvents } from 'vtex.pixel-manager'
 import {
   MaybeResponsiveValue,
   useResponsiveValue,
@@ -56,6 +57,7 @@ interface Props {
   customIcon: React.ReactElement
   header: React.ReactElement
   backdropMode?: MaybeResponsiveValue<BackdropMode>
+  customEventId?: string
 }
 
 function menuReducer(state: MenuState, action: MenuAction) {
@@ -106,7 +108,7 @@ const CSS_HANDLES = [
   'closeIconContainer',
 ] as const
 
-function Drawer(props: Props) {
+function Drawer(props: Partial<Props>) {
   const {
     width,
     header,
@@ -116,6 +118,7 @@ function Drawer(props: Props) {
     maxWidth = 450,
     slideDirection = 'horizontal',
     backdropMode: backdropModeProp = 'visible',
+    customEventId,
   } = props
   const handles = useCssHandles(CSS_HANDLES)
   const backdropMode = useResponsiveValue(backdropModeProp)
@@ -124,6 +127,8 @@ function Drawer(props: Props) {
   const { state: menuState, openMenu, closeMenu } = useMenuState()
   const { isOpen: isMenuOpen, hasBeenOpened: hasMenuBeenOpened } = menuState
   const [isMoving, setIsMoving] = useState(false)
+
+  useCustomEvents(customEventId, openMenu)
 
   const handleContainerClick: MouseEventHandler<HTMLElement> = event => {
     // target is the clicked element
