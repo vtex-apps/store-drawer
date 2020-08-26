@@ -9,7 +9,7 @@ import { defineMessages } from 'react-intl'
 import { IconMenu } from 'vtex.store-icons'
 import { useCssHandles } from 'vtex.css-handles'
 import { useChildBlock, ExtensionPoint } from 'vtex.render-runtime'
-import { useCustomEvents } from 'vtex.pixel-manager'
+import { usePixelEventCallback } from 'vtex.pixel-manager'
 import {
   MaybeResponsiveValue,
   useResponsiveValue,
@@ -128,7 +128,7 @@ function Drawer(props: Partial<Props>) {
   const { isOpen: isMenuOpen, hasBeenOpened: hasMenuBeenOpened } = menuState
   const [isMoving, setIsMoving] = useState(false)
 
-  useCustomEvents(customEventId, openMenu)
+  usePixelEventCallback(customEventId, openMenu)
 
   const handleContainerClick: MouseEventHandler<HTMLElement> = event => {
     // target is the clicked element
