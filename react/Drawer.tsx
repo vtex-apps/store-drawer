@@ -57,7 +57,7 @@ interface Props {
   customIcon: React.ReactElement
   header: React.ReactElement
   backdropMode?: MaybeResponsiveValue<BackdropMode>
-  customEventId?: string
+  customPixelEventId?: string
 }
 
 function menuReducer(state: MenuState, action: MenuAction) {
@@ -118,7 +118,7 @@ function Drawer(props: Partial<Props>) {
     maxWidth = 450,
     slideDirection = 'horizontal',
     backdropMode: backdropModeProp = 'visible',
-    customEventId,
+    customPixelEventId,
   } = props
   const handles = useCssHandles(CSS_HANDLES)
   const backdropMode = useResponsiveValue(backdropModeProp)
@@ -128,7 +128,7 @@ function Drawer(props: Partial<Props>) {
   const { isOpen: isMenuOpen, hasBeenOpened: hasMenuBeenOpened } = menuState
   const [isMoving, setIsMoving] = useState(false)
 
-  usePixelEventCallback(customEventId, openMenu)
+  usePixelEventCallback(customPixelEventId, openMenu)
 
   const handleContainerClick: MouseEventHandler<HTMLElement> = event => {
     // target is the clicked element

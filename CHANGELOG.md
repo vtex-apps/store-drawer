@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
-- `customEventId` prop.
+- `customPixelEventId` prop.
 
 ## [0.13.0] - 2020-08-10
 ### Added
