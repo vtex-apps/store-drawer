@@ -126,7 +126,7 @@ The `drawer` block accepts a few props that allow you to customize it.
 | `isFullWidth`        | `Boolean`                                                                  | Control whether or not the open Drawer should occupy the full available width.        | `false`        |
 | `slideDirection`     | `'horizontal'`&#124;`'vertical'`&#124;`'rightToLeft'`&#124;`'leftToRight'` | Controls the opening animation's direction.                                           | `'horizontal'` |
 | `backdropMode`       | `'default'`&#124;`'none'`                                                  | Controls if it should display the backdrop when the Drawer is open                    |
-| `customPixelEventId` | `string`                                                                   | Define the `id` of the event that will be listened to by the `drawer` to open itself. | `undefined`    |
+| `customPixelEventId` | `string`   | Store event ID responsible for triggering the `drawer` to automatically open itself on the interface. | `undefined`    |
 
 The `drawer-close-button` block accepts the following props to customize it:
 
