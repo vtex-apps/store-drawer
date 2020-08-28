@@ -1,5 +1,41 @@
-import React, { Fragment, FC } from 'react'
+import React, { FC } from 'react'
+import { usePixel } from 'vtex.pixel-manager/PixelContext'
+import { useCssHandles } from 'vtex.css-handles'
 
-const DrawerTrigger: FC = ({ children }) => <Fragment>{children}</Fragment>
+interface Props {
+  customPixelEventId?: string
+}
+
+const CSS_HANDLES = ['drawerTriggerContainer'] as const
+
+const DrawerTrigger: FC<Props> = ({ children, customPixelEventId }) => {
+  const { push } = usePixel()
+  const handles = useCssHandles(CSS_HANDLES)
+
+  const handleInteraction = () => {
+    if (!customPixelEventId) {
+      return
+    }
+
+    const pixelEvent = {
+      id: customPixelEventId,
+      event: 'openDrawer',
+    }
+
+    push(pixelEvent)
+  }
+
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      className={handles.drawerTriggerContainer}
+      onClick={handleInteraction}
+      onKeyDown={handleInteraction}
+    >
+      {children}
+    </div>
+  )
+}
 
 export default DrawerTrigger
