@@ -139,7 +139,7 @@ The `drawer-trigger` block accepts the following prop to customize it:
 
 | Prop name            | Type     | Description                                                           | Default value |
 | -------------------- | -------- | --------------------------------------------------------------------- | ------------- |
-| `customPixelEventId` | `string` | Define the `id` for the event that will be sent by the the trigger upon user click. | `undefined`   |
+| `customPixelEventId` | `string` | Defines the event ID to be sent whenever users interact with the Drawer component. | `undefined`   |
 
 ## Customization
 
