@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
-import { usePixel } from 'vtex.pixel-manager/PixelContext'
+import { usePixel } from 'vtex.pixel-manager'
+import { PixelData } from 'vtex.pixel-manager/react/PixelContext'
 import { useCssHandles } from 'vtex.css-handles'
 
 interface Props {
@@ -17,7 +18,7 @@ const DrawerTrigger: FC<Props> = ({ children, customPixelEventId }) => {
       return
     }
 
-    const pixelEvent = {
+    const pixelEvent: PixelData = {
       id: customPixelEventId,
       event: 'openDrawer',
     }
