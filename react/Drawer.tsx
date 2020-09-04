@@ -10,6 +10,7 @@ import { IconMenu } from 'vtex.store-icons'
 import { useCssHandles } from 'vtex.css-handles'
 import { useChildBlock, ExtensionPoint } from 'vtex.render-runtime'
 import { usePixelEventCallback } from 'vtex.pixel-manager'
+import { PixelData } from 'vtex.pixel-manager/react/PixelContext'
 import {
   MaybeResponsiveValue,
   useResponsiveValue,
@@ -57,7 +58,8 @@ interface Props {
   customIcon: React.ReactElement
   header: React.ReactElement
   backdropMode?: MaybeResponsiveValue<BackdropMode>
-  customPixelEventId?: string
+  customPixelEventId: PixelData['id']
+  customPixelEventName: PixelData['event']
 }
 
 function menuReducer(state: MenuState, action: MenuAction) {
@@ -119,6 +121,7 @@ function Drawer(props: Partial<Props>) {
     slideDirection = 'horizontal',
     backdropMode: backdropModeProp = 'visible',
     customPixelEventId,
+    customPixelEventName,
   } = props
   const handles = useCssHandles(CSS_HANDLES)
   const backdropMode = useResponsiveValue(backdropModeProp)
@@ -128,7 +131,19 @@ function Drawer(props: Partial<Props>) {
   const { isOpen: isMenuOpen, hasBeenOpened: hasMenuBeenOpened } = menuState
   const [isMoving, setIsMoving] = useState(false)
 
-  usePixelEventCallback(customPixelEventId, openMenu)
+  // Always add the listener for 'openDrawer' events, since they're sent by
+  // the drawer-trigger block.
+  usePixelEventCallback({
+    eventId: customPixelEventId,
+    handler: openMenu,
+    eventName: 'openDrawer',
+  })
+
+  usePixelEventCallback({
+    eventId: customPixelEventId,
+    handler: openMenu,
+    eventName: customPixelEventName,
+  })
 
   const handleContainerClick: MouseEventHandler<HTMLElement> = event => {
     // target is the clicked element
