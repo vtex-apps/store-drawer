@@ -46,20 +46,20 @@ type Width = '100%' | 'auto'
 type BackdropMode = 'visible' | 'none'
 
 interface Props {
-  actionIconId: string
-  dismissIconId: string
+  actionIconId?: string
+  dismissIconId?: string
   position: Position
   width?: Width
-  height: Height
+  height?: Height
   slideDirection?: SlideDirection
-  isFullWidth: boolean
+  isFullWidth?: boolean
   maxWidth?: number | string
   children: React.ReactNode
-  customIcon: React.ReactElement
-  header: React.ReactElement
+  customIcon?: React.ReactElement
+  header?: React.ReactElement
   backdropMode?: MaybeResponsiveValue<BackdropMode>
-  customPixelEventId: PixelData['id']
-  customPixelEventName: PixelData['event']
+  customPixelEventId?: PixelData['id']
+  customPixelEventName?: PixelData['event']
 }
 
 function menuReducer(state: MenuState, action: MenuAction) {
@@ -110,7 +110,7 @@ const CSS_HANDLES = [
   'closeIconContainer',
 ] as const
 
-function Drawer(props: Partial<Props>) {
+function Drawer(props: Props) {
   const {
     width,
     header,
