@@ -118,40 +118,49 @@ const Menu = () => (
 
 ## Configuration
 
-The Drawer component accepts a few props that allow you to customize it.
+The `drawer` block accepts a few props that allow you to customize it.
 
-| Prop name        | Type                                                                       | Description                                                                    | Default value  |
-| ---------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | -------------- |
-| `maxWidth`       | `number` or `string`                                                       | Define the open Drawer's maximum width.                                        | `450`          |
-| `isFullWidth`    | `Boolean`                                                                  | Control whether or not the open Drawer should occupy the full available width. | `false`        |
-| `slideDirection` | `'horizontal'`&#124;`'vertical'`&#124;`'rightToLeft'`&#124;`'leftToRight'` | Controls the opening animation's direction.                                    | `'horizontal'` |
-| `backdropMode` | `'default'`&#124;`'none'` | Controls if it should display the backdrop when the Drawer is open |
+| Prop name            | Type                                                                       | Description                                                                           | Default value  |
+| -------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | -------------- |
+| `maxWidth`           | `number` or `string`                                                       | Define the open Drawer's maximum width.                                               | `450`          |
+| `isFullWidth`        | `Boolean`                                                                  | Control whether or not the open Drawer should occupy the full available width.        | `false`        |
+| `slideDirection`     | `'horizontal'`&#124;`'vertical'`&#124;`'rightToLeft'`&#124;`'leftToRight'` | Controls the opening animation's direction.                                           | `'horizontal'` |
+| `backdropMode`       | `'default'`&#124;`'none'`                                                  | Controls if it should display the backdrop when the Drawer is open                    |
+| `customPixelEventId` | `string`   | Store event ID responsible for triggering the `drawer` to automatically open itself on the interface. | `undefined`    |
+| `customPixelEventName` | `string`                                                                   | Store event name responsible for triggering the `drawer` to automatically open itself on the interface. Some examples are: `'addToCart'` and `'removeFromCart'` events. Notice that using this prop will make the drawer open in **every** event with the specified name if no `customPixelEventId` is specified. | `undefined`    |
 
-The `DrawerCloseButton` accepts the following props to customize it:
+The `drawer-close-button` block accepts the following props to customize it:
 
 | Prop name | Type                     | Description                                   | Default value |
 | --------- | ------------------------ | --------------------------------------------- | ------------- |
 | `size`    | `Number`                 | Define the size of the icon inside the button | `30`          |
 | `type`    | `'filled'`&#124;`'line'` | Define the type of the icon                   | `'line'`      |
 
+The `drawer-trigger` block accepts the following prop to customize it:
+
+| Prop name            | Type     | Description                                                           | Default value |
+| -------------------- | -------- | --------------------------------------------------------------------- | ------------- |
+| `customPixelEventId` | `string` | Defines the event ID to be sent whenever users interact with the Drawer component. | `undefined`   |
+
 ## Customization
 
 In order to apply CSS customizations in this and other blocks, follow the instructions given in the recipe on [Using CSS Handles for store customization](https://vtex.io/docs/recipes/style/using-css-handles-for-store-customization).
 
-| CSS Handles          |
-| -------------------- |
-| `drawer`             |
-| `opened`             |
-| `overlay`            |
-| `overlay--visible`   |
-| `closed`             |
-| `moving`             |
-| `drawerContent`      |
-| `drawerHeader`       |
-| `openIconContainer`  |
-| `closeIconContainer` |
-| `closeIconButton`    |
-| `childrenContainer`  |
+| CSS Handles              |
+| ------------------------ |
+| `drawer`                 |
+| `opened`                 |
+| `overlay`                |
+| `overlay--visible`       |
+| `closed`                 |
+| `moving`                 |
+| `drawerContent`          |
+| `drawerHeader`           |
+| `drawerTriggerContainer` |
+| `openIconContainer`      |
+| `closeIconContainer`     |
+| `closeIconButton`        |
+| `childrenContainer`      |
 
 ## Contributors ✨
 

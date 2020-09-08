@@ -9,6 +9,8 @@ import { defineMessages } from 'react-intl'
 import { IconMenu } from 'vtex.store-icons'
 import { useCssHandles } from 'vtex.css-handles'
 import { useChildBlock, ExtensionPoint } from 'vtex.render-runtime'
+import { usePixelEventCallback } from 'vtex.pixel-manager'
+import { PixelData } from 'vtex.pixel-manager/react/PixelContext'
 import {
   MaybeResponsiveValue,
   useResponsiveValue,
@@ -44,18 +46,20 @@ type Width = '100%' | 'auto'
 type BackdropMode = 'visible' | 'none'
 
 interface Props {
-  actionIconId: string
-  dismissIconId: string
+  actionIconId?: string
+  dismissIconId?: string
   position: Position
   width?: Width
-  height: Height
+  height?: Height
   slideDirection?: SlideDirection
-  isFullWidth: boolean
+  isFullWidth?: boolean
   maxWidth?: number | string
   children: React.ReactNode
-  customIcon: React.ReactElement
-  header: React.ReactElement
+  customIcon?: React.ReactElement
+  header?: React.ReactElement
   backdropMode?: MaybeResponsiveValue<BackdropMode>
+  customPixelEventId?: PixelData['id']
+  customPixelEventName?: PixelData['event']
 }
 
 function menuReducer(state: MenuState, action: MenuAction) {
@@ -116,6 +120,8 @@ function Drawer(props: Props) {
     maxWidth = 450,
     slideDirection = 'horizontal',
     backdropMode: backdropModeProp = 'visible',
+    customPixelEventId,
+    customPixelEventName,
   } = props
   const handles = useCssHandles(CSS_HANDLES)
   const backdropMode = useResponsiveValue(backdropModeProp)
@@ -124,6 +130,20 @@ function Drawer(props: Props) {
   const { state: menuState, openMenu, closeMenu } = useMenuState()
   const { isOpen: isMenuOpen, hasBeenOpened: hasMenuBeenOpened } = menuState
   const [isMoving, setIsMoving] = useState(false)
+
+  // Always add the listener for 'openDrawer' events, since they're sent by
+  // the drawer-trigger block.
+  usePixelEventCallback({
+    eventId: customPixelEventId,
+    handler: openMenu,
+    eventName: 'openDrawer',
+  })
+
+  usePixelEventCallback({
+    eventId: customPixelEventId,
+    handler: openMenu,
+    eventName: customPixelEventName,
+  })
 
   const handleContainerClick: MouseEventHandler<HTMLElement> = event => {
     // target is the clicked element
