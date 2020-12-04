@@ -9,9 +9,14 @@ const CSS_HANDLES = ['closeIconButton'] as const
 interface Props {
   size?: number
   type?: 'filled' | 'line'
+  text?: string
 }
 
-const DrawerCloseButton: React.FC<Props> = ({ size = 30, type = 'line' }) => {
+const DrawerCloseButton: React.FC<Props> = ({
+  size = 30,
+  type = 'line',
+  text,
+}) => {
   const { close } = useDrawer()
 
   const handles = useCssHandles(CSS_HANDLES)
@@ -21,7 +26,7 @@ const DrawerCloseButton: React.FC<Props> = ({ size = 30, type = 'line' }) => {
       className={`${handles.closeIconButton} pa4 pointer bg-transparent transparent bn pointer`}
       onClick={close}
     >
-      <IconClose size={size} type={type} />
+      {text ?? <IconClose size={size} type={type} />}
     </button>
   )
 }

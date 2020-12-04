@@ -254,10 +254,8 @@ const messages = defineMessages({
   },
 })
 
-Drawer.getSchema = () => {
-  return {
-    title: messages.title.id,
-  }
+Drawer.schema = {
+  title: messages.title.id,
 }
 
 export default Drawer
