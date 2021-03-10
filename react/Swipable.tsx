@@ -457,7 +457,7 @@ export default class Swipable extends React.Component<Props> {
   public render() {
     return (
       <div
-        aria-hidden
+        aria-hidden={this.props.enabled ? 'false' : 'true'}
         ref={this.dragContainer}
         style={{
           ...this.props.style,
