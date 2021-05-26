@@ -44,6 +44,7 @@ type SlideDirection = 'vertical' | 'horizontal' | 'rightToLeft' | 'leftToRight'
 type Height = '100%' | 'auto' | 'fullscreen'
 type Width = '100%' | 'auto'
 type BackdropMode = 'visible' | 'none'
+type RenderingStrategy = 'lazy' | 'eager'
 
 interface Props {
   actionIconId?: string
@@ -58,6 +59,7 @@ interface Props {
   customIcon?: React.ReactElement
   header?: React.ReactElement
   backdropMode?: MaybeResponsiveValue<BackdropMode>
+  renderingStrategy?: RenderingStrategy
   customPixelEventId?: PixelData['id']
   customPixelEventName?: PixelData['event']
 }
@@ -120,6 +122,7 @@ function Drawer(props: Props) {
     maxWidth = 450,
     slideDirection = 'horizontal',
     backdropMode: backdropModeProp = 'visible',
+    renderingStrategy = 'lazy',
     customPixelEventId,
     customPixelEventName,
   } = props
@@ -172,6 +175,9 @@ function Drawer(props: Props) {
   )
 
   const overlayVisible = backdropMode === 'visible' && isMenuOpen
+
+  const shouldRenderChildren =
+    renderingStrategy === 'eager' || hasMenuBeenOpened
 
   return (
     <DrawerContextProvider value={contextValue}>
@@ -236,7 +242,7 @@ function Drawer(props: Props) {
                 className={`${handles.childrenContainer} flex flex-grow-1`}
                 onClick={handleContainerClick}
               >
-                {hasMenuBeenOpened && children}
+                {shouldRenderChildren && children}
               </div>
               {/* eslint-enable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
             </div>
